@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Experimental.UIElements;
 
 public class RayCastShooter : MonoBehaviour {
 
@@ -18,12 +19,23 @@ public class RayCastShooter : MonoBehaviour {
 	private float bulletIncrement = 0.0f;
 
 	private int type = 0;
+    public Button yourButton;
+    //declare a boolean
+    public bool buttonisclicked;
+
+    // Use this for initialization
+    void Start () {
+
+        /* for button */
+        //Button btn = yourButton.GetComponent<Button>();
+        //Button btn = Instantiate(UnityEngine.Object)yourButton).GetComponent<Button>();
+        //btn.onClick.AddListener(TaskOnClick);
+        //set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
+        buttonisclicked = false;
 
 
-	// Use this for initialization
-	void Start () {
-		
-		dots = new List<Vector2> ();
+
+        dots = new List<Vector2> ();
 		dotsPool = new List<GameObject> ();
 
 		var i = 0;

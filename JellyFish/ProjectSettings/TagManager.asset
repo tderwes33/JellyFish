@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Background
+  - SideWall
+  - ball
+  - TopWall
+  - bullet
+  - Letter1
   layers:
   - Default
   - TransparentFX
