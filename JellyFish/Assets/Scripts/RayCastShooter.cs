@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.UI;
 
 public class RayCastShooter : MonoBehaviour {
 
@@ -19,12 +20,16 @@ public class RayCastShooter : MonoBehaviour {
 	private float bulletIncrement = 0.0f;
 
 	private int type = 0;
-    public Button yourButton;
-    //declare a boolean
-    public bool buttonisclicked;
+    public UnityEngine.UI.Button yourButton;
+	//declare a boolean
+	public bool buttonisclicked;
 
-    // Use this for initialization
-    void Start () {
+    // trial
+	public GameObject Panel;
+
+
+	// Use this for initialization
+	void Start () {
 
         /* for button */
         //Button btn = yourButton.GetComponent<Button>();
@@ -33,9 +38,9 @@ public class RayCastShooter : MonoBehaviour {
         //set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
         buttonisclicked = false;
 
+		
 
-
-        dots = new List<Vector2> ();
+		dots = new List<Vector2> ();
 		dotsPool = new List<GameObject> ();
 
 		var i = 0;
@@ -152,55 +157,80 @@ public class RayCastShooter : MonoBehaviour {
 	}
 
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+   
+    void Update () {
 
-		if (bullet.gameObject.activeSelf) {
+        //bool isPanelActive = Panel;
 
-			bulletProgress += bulletIncrement;
+        if (!Panel.activeSelf)
 
-			if (bulletProgress > 1) {
-				dots.RemoveAt (0);
-				if (dots.Count < 2) {
-					bullet.gameObject.SetActive (false);
-					return;
-				} else {
-					InitPath ();
+		{ 
+
+			if (bullet.gameObject.activeSelf)
+			{
+
+				bulletProgress += bulletIncrement;
+
+				if (bulletProgress > 1)
+				{
+					dots.RemoveAt(0);
+					if (dots.Count < 2)
+					{
+						bullet.gameObject.SetActive(false);
+						return;
+					}
+					else
+					{
+						InitPath();
+					}
 				}
+
+				var px = dots[0].x + bulletProgress * (dots[1].x - dots[0].x);
+				var py = dots[0].y + bulletProgress * (dots[1].y - dots[0].y);
+
+				bullet.transform.position = new Vector2(px, py);
+
+				return;
 			}
 
-			var px = dots [0].x + bulletProgress * (dots [1].x - dots [0].x);
-			var py = dots [0].y + bulletProgress * (dots [1].y - dots [0].y);
+			if (dots == null)
+				return;
 
-			bullet.transform.position = new Vector2 (px, py);
+			if (Input.touches.Length > 0)
+			{
 
-			return;
-		}
-		
-		if (dots == null)
-			return;
+				Touch touch = Input.touches[0];
 
-		if (Input.touches.Length > 0) {
-
-			Touch touch = Input.touches [0];
-
-			if (touch.phase == TouchPhase.Began) {
-				HandleTouchDown (touch.position);
-			} else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended) {
-				HandleTouchUp (touch.position);
-			} else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) {
-				HandleTouchMove (touch.position);
+				if (touch.phase == TouchPhase.Began)
+				{
+					HandleTouchDown(touch.position);
+				}
+				else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended)
+				{
+					HandleTouchUp(touch.position);
+				}
+				else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+				{
+					HandleTouchMove(touch.position);
+				}
+				HandleTouchMove(touch.position);
+				return;
 			}
-			HandleTouchMove (touch.position);	
-			return;
-		} else if (Input.GetMouseButtonDown (0)) {
-			mouseDown = true;
-			HandleTouchDown (Input.mousePosition);
-		} else if (Input.GetMouseButtonUp (0)) {
-			mouseDown = false;
-			HandleTouchUp (Input.mousePosition);
-		} else if (mouseDown) {
-			HandleTouchMove (Input.mousePosition);
+			else if (Input.GetMouseButtonDown(0))
+			{
+				mouseDown = true;
+				HandleTouchDown(Input.mousePosition);
+			}
+			else if (Input.GetMouseButtonUp(0))
+			{
+				mouseDown = false;
+				HandleTouchUp(Input.mousePosition);
+			}
+			else if (mouseDown)
+			{
+				HandleTouchMove(Input.mousePosition);
+			}
 		}
 	}
 

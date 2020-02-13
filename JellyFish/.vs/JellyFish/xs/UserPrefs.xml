@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{0FE469C2-6A55-B6B1-57CA-3B63D3865C56}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/hints_panel.cs">
+    <Files>
+      <File FileName="Assets/Scripts/RayCastShooter.cs" Line="166" Column="1" />
+      <File FileName="Assets/Scripts/hints_panel.cs" Line="48" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="JellyFish" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="hints_panel.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.UnitTesting.TestPad">
+        <State name="__root__">
+          <Node name="JellyFish" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8586bb76-1192-4817-b0e3-134d973f9883" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
