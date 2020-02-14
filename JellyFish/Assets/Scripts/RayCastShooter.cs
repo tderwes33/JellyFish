@@ -10,16 +10,16 @@ public class RayCastShooter : MonoBehaviour {
 	public GameObject dotPrefab;
 	public Bullet bullet;
 
-	private bool mouseDown = false;
-	private List<Vector2> dots;
-	private List<GameObject> dotsPool;
-	private int maxDots = 26;
+    public bool mouseDown = false;
+    public List<Vector2> dots;
+    public List<GameObject> dotsPool;
+    public int maxDots = 26;
 
-	private float dotGap = 0.32f;
-	private float bulletProgress = 0.0f;
-	private float bulletIncrement = 0.0f;
+    public float dotGap = 0.32f;
+    public float bulletProgress = 0.0f;
+    public float bulletIncrement = 0.0f;
 
-	private int type = 0;
+    public int type = 0;
     public UnityEngine.UI.Button yourButton;
 	//declare a boolean
 	public bool buttonisclicked;
@@ -29,7 +29,7 @@ public class RayCastShooter : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	public void Start () {
 
         /* for button */
         //Button btn = yourButton.GetComponent<Button>();
@@ -64,7 +64,7 @@ public class RayCastShooter : MonoBehaviour {
 		SetNextType();
 	}
 
-	void SetNextType () {
+    public void SetNextType () {
 
 		foreach (var go in colorsGO) {
 			go.SetActive(false);
@@ -76,10 +76,10 @@ public class RayCastShooter : MonoBehaviour {
 
 	}
 
-	void HandleTouchDown (Vector2 touch) {
+    public void HandleTouchDown (Vector2 touch) {
 	}
 
-	void HandleTouchUp (Vector2 touch) {
+    public void HandleTouchUp (Vector2 touch) {
 
 		if (dots == null || dots.Count < 2)
 			return;
@@ -97,7 +97,7 @@ public class RayCastShooter : MonoBehaviour {
 		SetNextType();
 	}
 
-	void HandleTouchMove (Vector2 touch) {
+    public void HandleTouchMove (Vector2 touch) {
 
 
 		if (bullet.gameObject.activeSelf)
@@ -129,7 +129,7 @@ public class RayCastShooter : MonoBehaviour {
 		}
 	}
 
-	void DoRayCast (RaycastHit2D previousHit, Vector2 directionIn) {
+    public void DoRayCast (RaycastHit2D previousHit, Vector2 directionIn) {
 
 		dots.Add (previousHit.point);
 
@@ -158,8 +158,8 @@ public class RayCastShooter : MonoBehaviour {
 
 
     // Update is called once per frame
-   
-    void Update () {
+
+    public void Update () {
 
         //bool isPanelActive = Panel;
 
@@ -234,7 +234,7 @@ public class RayCastShooter : MonoBehaviour {
 		}
 	}
 
-	void DrawPaths () {
+    public void DrawPaths () {
 		
 		if (dots.Count > 1) {
 
@@ -249,7 +249,7 @@ public class RayCastShooter : MonoBehaviour {
 		}
 	}
 
-	void DrawSubPath (int start, int end, ref int index) {
+    public void DrawSubPath (int start, int end, ref int index) {
 		var pathLength = Vector2.Distance (dots [start], dots [end]);
 
 		int numDots = Mathf.RoundToInt ( (float)pathLength / dotGap );
@@ -272,7 +272,7 @@ public class RayCastShooter : MonoBehaviour {
 		}
 	}
 
-	void InitPath () {
+    public void InitPath () {
 		var start = dots [0];
 		var end = dots [1];
 		var length = Vector2.Distance (start, end);
