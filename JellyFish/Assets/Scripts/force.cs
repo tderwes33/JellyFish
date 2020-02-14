@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class force : MonoBehaviour
 {
     int direction = -1;
     // Update is called once per frame
+
     void Update()
     {
         transform.Translate(Time.deltaTime * 2 * direction, 0, 0);
@@ -20,6 +22,9 @@ public class force : MonoBehaviour
             collision.gameObject.SetActive(false);
             gameObject.SetActive(false);
             Invoke("ResetBall", 1.0f);
+            Text t = gameObject.GetComponentInChildren<Text>();
+            Debug.Log(t.text);
+            t.text = "B";
         }
         else if(collision.gameObject.tag == "SideWall")
 		{

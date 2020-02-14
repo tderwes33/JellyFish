@@ -10,6 +10,10 @@ TagManager:
   - TopWall
   - bullet
   - Letter1
+  - Letter2
+  - Letter3
+  - Letter4
+  - Letter5
   layers:
   - Default
   - TransparentFX
