@@ -1,8 +1,14 @@
 ﻿<Properties StartupConfiguration="{0FE469C2-6A55-B6B1-57CA-3B63D3865C56}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/hints_panel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/force.cs">
     <Files>
-      <File FileName="Assets/Scripts/RayCastShooter.cs" Line="166" Column="1" />
-      <File FileName="Assets/Scripts/hints_panel.cs" Line="48" Column="1" />
+      <File FileName="Assets/Scripts/RayCastShooter.cs" Line="95" Column="3" />
+      <File FileName="Assets/Scripts/hints_panel.cs" />
+      <File FileName="Assets/Scripts/force.cs" Line="7" Column="1" />
+      <File FileName="Assets/hint_panel_close.cs" />
+      <File FileName="Assets/Scripts/MoveBubbles.cs" />
+      <File FileName="Assets/Scripts/display_category.cs" />
+      <File FileName="Assets/Scripts/Ball.cs" />
+      <File FileName="Assets/Scripts/Bullet.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,22 +16,17 @@
           <Node name="JellyFish" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="hints_panel.cs" selected="True" />
+                <Node name="force.cs" selected="True" />
               </Node>
             </Node>
           </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.UnitTesting.TestPad">
-        <State name="__root__">
-          <Node name="JellyFish" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="8586bb76-1192-4817-b0e3-134d973f9883" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="a84ae66a-3b1d-4d39-ac4f-7fdd45ed2e7f" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

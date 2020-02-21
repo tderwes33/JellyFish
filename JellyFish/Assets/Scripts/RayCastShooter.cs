@@ -31,12 +31,13 @@ public class RayCastShooter : MonoBehaviour {
 	// Use this for initialization
 	public void Start () {
 
-        /* for button */
-        //Button btn = yourButton.GetComponent<Button>();
-        //Button btn = Instantiate(UnityEngine.Object)yourButton).GetComponent<Button>();
-        //btn.onClick.AddListener(TaskOnClick);
-        //set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
-        buttonisclicked = false;
+		
+		/* for button */
+		//Button btn = yourButton.GetComponent<Button>();
+		//Button btn = Instantiate(UnityEngine.Object)yourButton).GetComponent<Button>();
+		//btn.onClick.AddListener(TaskOnClick);
+		//set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
+		buttonisclicked = false;
 
 		
 

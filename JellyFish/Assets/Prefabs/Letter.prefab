@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde78e556f2ec77458b800e51ca42343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  char_arr: 43004f004d0050004c0045005800490054005900
+  i: 0
 --- !u!58 &58618246948220172
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -208,7 +210,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 0
-  m_Text: A
+  m_Text: 
 --- !u!1 &8546986064829069229
 GameObject:
   m_ObjectHideFlags: 0
