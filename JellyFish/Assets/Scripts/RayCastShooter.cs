@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class RayCastShooter : MonoBehaviour {
 
+	
+
 	public GameObject[] colorsGO;
 	public GameObject dotPrefab;
 	public Bullet bullet;
