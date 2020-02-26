@@ -72,7 +72,7 @@ public class force : MonoBehaviour
                 var foundIndexes = new List<int>();
 
 
-                for (int j = word_formed.IndexOf('a'); j > -1; j = word_formed.IndexOf('a', j+ 1))
+                for (int j = word_formed.IndexOf(t.text[0]); j > -1; j = word_formed.IndexOf(t.text[0], j+ 1))
                 {
                     // for loop end when i=-1 ('a' not found)
                     foundIndexes.Add(j);
@@ -89,20 +89,8 @@ public class force : MonoBehaviour
                 wordCreated.text =new string(x);
             }
            
-            if (i < char_arr.Length) {
-                var random_index = Random.Range(0, char_arr.Length-1);
-                
-                t.text = char_arr[random_index].ToString();
-                //t.text = "B";
-                i++;
-
-            }
-            else if (i == char_arr.Length)
-            {
-                
-                i = 0;
-            }
-
+          
+	else {
             /** decrement health **/
             health--;
 
@@ -119,7 +107,20 @@ public class force : MonoBehaviour
                 h3.SetActive(false);
                 gameover.SetActive(true);
             }
-           
+           }
+	     if (i < char_arr.Length) {
+                var random_index = Random.Range(0, char_arr.Length);
+                
+                t.text = char_arr[random_index].ToString();
+                //t.text = "B";
+                i++;
+
+            }
+            else if (i == char_arr.Length)
+            {
+                
+                i = 0;
+            }
 
 
             
