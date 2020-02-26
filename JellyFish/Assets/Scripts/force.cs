@@ -44,7 +44,7 @@ public class force : MonoBehaviour
         Debug.Log(t.text);
         if (i < char_arr.Length)
         {
-            var random_index = Random.Range(0, char_arr.Length - 1);
+            var random_index = Random.Range(0, char_arr.Length);
             
             t.text = char_arr[random_index].ToString();
 
