@@ -11,16 +11,17 @@ public class force : MonoBehaviour
 
     int direction = -1;
 
-    public GameObject h1, h2, h3, gameover; // the three hearts
+    public GameObject h1, h2, h3, gameover;
+    // the three hearts
 
 
     // Update is called once per frame
-    public static string word1="complexity".ToUpper();
+    public static string word1="helps".ToUpper();
     //static string word_formed = word1.Distinct().ToArray().ToString();
-    static string word_formed = word1;
-    
+    public static string word_formed = word1;
+    public int word_length = word_formed.Length;
     public static char[] char_arr = word_formed.ToCharArray();
-    
+    public Text wordCreated;
     static public int i = 0;
     
     //static public char[] char_arr1 = "brunda".ToCharArray();
@@ -32,6 +33,7 @@ public class force : MonoBehaviour
     void Start()
     {
 
+        
         h1 = GameObject.FindGameObjectWithTag("heart1");
         h2 = GameObject.FindGameObjectWithTag("heart2");
         h3 = GameObject.FindGameObjectWithTag("heart3");
@@ -53,6 +55,7 @@ public class force : MonoBehaviour
         {
             i = 0;
         }
+        
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -64,14 +67,28 @@ public class force : MonoBehaviour
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Text t = gameObject.GetComponentInChildren<Text>();
-            //if (t.text == "D" || t.text == "B") //Condition when it is a correct character  
-            //{
-            //    h1.SetActive(false);
-            //    h2.SetActive(false);
-            //    h3.SetActive(false);
-            //    gameover.SetActive(true);
-            //}
-            Debug.Log(t.text);
+            if (word_formed.Contains(t.text[0])) //Condition when it is a correct character  
+            {
+                var foundIndexes = new List<int>();
+
+
+                for (int j = word_formed.IndexOf('a'); j > -1; j = word_formed.IndexOf('a', j+ 1))
+                {
+                    // for loop end when i=-1 ('a' not found)
+                    foundIndexes.Add(j);
+                }
+                char[] x = wordCreated.text.ToCharArray();
+                Debug.Log(x.ToString());
+                for (int j = 0; j < foundIndexes.Count; j++)
+                {
+                    x[foundIndexes[j] * 2]= t.text[0];
+
+                }
+                
+                
+                wordCreated.text =new string(x);
+            }
+           
             if (i < char_arr.Length) {
                 var random_index = Random.Range(0, char_arr.Length-1);
                 
@@ -82,7 +99,7 @@ public class force : MonoBehaviour
             }
             else if (i == char_arr.Length)
             {
-                Debug.Log("I reached");
+                
                 i = 0;
             }
 

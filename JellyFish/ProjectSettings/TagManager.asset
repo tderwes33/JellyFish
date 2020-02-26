@@ -19,6 +19,7 @@ TagManager:
   - heart2
   - heart3
   - gameover
+  - wordCreated
   layers:
   - Default
   - TransparentFX

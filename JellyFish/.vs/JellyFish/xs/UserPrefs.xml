@@ -1,14 +1,14 @@
 ﻿<Properties StartupConfiguration="{0FE469C2-6A55-B6B1-57CA-3B63D3865C56}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/force.cs">
     <Files>
-      <File FileName="Assets/Scripts/RayCastShooter.cs" Line="95" Column="3" />
+      <File FileName="Assets/Scripts/RayCastShooter.cs" Line="78" Column="9" />
       <File FileName="Assets/Scripts/hints_panel.cs" />
-      <File FileName="Assets/Scripts/force.cs" Line="36" Column="39" />
-      <File FileName="Assets/hint_panel_close.cs" />
-      <File FileName="Assets/Scripts/MoveBubbles.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/display_category.cs" />
+      <File FileName="Assets/Scripts/force.cs" Line="87" Column="17" />
+      <File FileName="Assets/hint_panel_close.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MoveBubbles.cs" />
+      <File FileName="Assets/Scripts/display_category.cs" Line="10" Column="17" />
       <File FileName="Assets/Scripts/Ball.cs" />
-      <File FileName="Assets/Scripts/Bullet.cs" />
+      <File FileName="Assets/Scripts/Bullet.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,7 +26,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="2dc9568f-49dd-41e0-bdc6-4d3a45dafd06" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="5c94a212-4352-4034-908b-522ccdc7e892" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

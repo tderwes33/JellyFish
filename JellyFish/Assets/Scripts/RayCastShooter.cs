@@ -20,14 +20,14 @@ public class RayCastShooter : MonoBehaviour {
     public float dotGap = 0.32f;
     public float bulletProgress = 0.0f;
     public float bulletIncrement = 0.0f;
-
-    public int type = 0;
+	public Text wordCreated;
+	public int type = 0;
     public UnityEngine.UI.Button yourButton;
 	//declare a boolean
 	public bool buttonisclicked;
-
+    public force forceFile;
     // trial
-	public GameObject Panel;
+    public GameObject Panel;
 
 
 	// Use this for initialization
@@ -40,7 +40,7 @@ public class RayCastShooter : MonoBehaviour {
 		//btn.onClick.AddListener(TaskOnClick);
 		//set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
 		buttonisclicked = false;
-
+		forceFile = new force();
 		
 
 		dots = new List<Vector2> ();
@@ -65,6 +65,17 @@ public class RayCastShooter : MonoBehaviour {
 
 		//select initial type
 		SetNextType();
+        //wordCreated = GameObject.FindGameObjectWithTag("wordCreated").GetComponent<Text>();
+        string s = "";
+        int totalLength = 0;
+        while (totalLength != forceFile.word_length)
+        {
+            Debug.Log("Step 1");
+            s += "_ ";
+            totalLength += 1;
+        }
+        Debug.Log("Step 2");
+        wordCreated.text = s;
 	}
 
     public void SetNextType () {
