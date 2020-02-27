@@ -20,6 +20,7 @@ TagManager:
   - heart3
   - gameover
   - wordCreated
+  - hint_button
   layers:
   - Default
   - TransparentFX

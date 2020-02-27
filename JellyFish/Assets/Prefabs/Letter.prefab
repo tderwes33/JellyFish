@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1458023571398730947}
   - component: {fileID: 1458023571398730957}
   - component: {fileID: 58618246948220172}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Letter
   m_TagString: Letter1
   m_Icon: {fileID: 0}
@@ -116,8 +116,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde78e556f2ec77458b800e51ca42343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  char_arr: 43004f004d0050004c0045005800490054005900
-  i: 0
+  h1: {fileID: 0}
+  h2: {fileID: 0}
+  h3: {fileID: 0}
+  gameover: {fileID: 0}
+  word_length: 5
+  wordCreated: {fileID: 0}
 --- !u!58 &58618246948220172
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -145,7 +149,7 @@ GameObject:
   - component: {fileID: 854790427707345414}
   - component: {fileID: 5833652395090409919}
   - component: {fileID: 7877645490935367104}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +227,7 @@ GameObject:
   - component: {fileID: 8830386242024956323}
   - component: {fileID: 6793450182609006382}
   - component: {fileID: 124704190076586401}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

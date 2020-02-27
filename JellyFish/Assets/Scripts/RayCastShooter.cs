@@ -41,7 +41,6 @@ public class RayCastShooter : MonoBehaviour {
 		//set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
 		buttonisclicked = false;
 		forceFile = new force();
-		
 
 		dots = new List<Vector2> ();
 		dotsPool = new List<GameObject> ();

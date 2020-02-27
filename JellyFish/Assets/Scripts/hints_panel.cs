@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public class hints_panel : MonoBehaviour
 {
-   
 
+    public static Boolean paused = false;
     public GameObject Panel;
 
     public void OpenPanel()
@@ -16,7 +16,8 @@ public class hints_panel : MonoBehaviour
 
         if (Panel != null)
         {
-            
+            //Debug.Log(paused);
+            paused = true;
             Panel.SetActive(true);
         }
     }
@@ -26,11 +27,16 @@ public class hints_panel : MonoBehaviour
 
         if (Panel != null)
         {
+            paused = false;
             Panel.SetActive(false);
         }
     }
 
-    
+    public Boolean getPaused()
+    {
+        return paused;
+    }
+
     Text txt;
 
     // Start is called before the first frame update

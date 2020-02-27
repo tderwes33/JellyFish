@@ -10,7 +10,7 @@ public class display_category : MonoBehaviour
     void Start()
     {
         txt = gameObject.GetComponent<Text>();
-        txt.text = "Category : ";
+        txt.text = "Category :  ";
     }
 
     // Update is called once per frame
