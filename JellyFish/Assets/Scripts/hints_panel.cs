@@ -29,6 +29,7 @@ public class hints_panel : MonoBehaviour
         {
             paused = false;
             Panel.SetActive(false);
+
         }
     }
 

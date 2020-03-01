@@ -29,17 +29,19 @@ public class RayCastShooter : MonoBehaviour {
     // trial
     public GameObject Panel;
 
+    hints_panel hp;
 
-	// Use this for initialization
-	public void Start () {
+    // Use this for initialization
+    public void Start () {
 
-		
-		/* for button */
-		//Button btn = yourButton.GetComponent<Button>();
-		//Button btn = Instantiate(UnityEngine.Object)yourButton).GetComponent<Button>();
-		//btn.onClick.AddListener(TaskOnClick);
-		//set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
-		buttonisclicked = false;
+        hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
+
+        /* for button */
+        //Button btn = yourButton.GetComponent<Button>();
+        //Button btn = Instantiate(UnityEngine.Object)yourButton).GetComponent<Button>();
+        //btn.onClick.AddListener(TaskOnClick);
+        //set to false on start, may not be necessary, I just can't remember if C# will return 1 or 0 for undefined booleans 
+        buttonisclicked = false;
 		forceFile = new force();
 
 		dots = new List<Vector2> ();
@@ -67,7 +69,7 @@ public class RayCastShooter : MonoBehaviour {
         //wordCreated = GameObject.FindGameObjectWithTag("wordCreated").GetComponent<Text>();
         string s = "";
         int totalLength = 0;
-        while (totalLength != forceFile.word_length)
+        while (totalLength != forceFile.word_length1)
         {
             Debug.Log("Step 1");
             s += "_ ";
@@ -175,6 +177,16 @@ public class RayCastShooter : MonoBehaviour {
     public void Update () {
 
         //bool isPanelActive = Panel;
+
+
+        if (hp != null && !hp.getPaused() )
+        {
+            
+        }
+        else
+        {
+            
+        }
 
         if (!Panel.activeSelf)
 

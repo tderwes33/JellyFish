@@ -29,16 +29,20 @@ public class force : MonoBehaviour
     // Update is called once per frame
     public static string word1=actual_word.ToUpper();
     public static string word_formed = new string(word1.Distinct().ToArray());
+    public static string word_formed1 = word1;
 
     hints_panel hp;
     //public static string word_formed = word1;
     public int word_length = word_formed.Length;
+    public int word_length1 = word_formed1.Length;
+
     public static char[] char_arr = word_formed.ToCharArray();
     public Text wordCreated;
     static public int i = 0;
     public static List<char> CorrectandIncorrect = new List<char>();
     static char[] remaining;
-
+    public static List<char> Incorrect = new List<char>();
+    public static List<char> Correct = new List<char>();
     public string getHint()
     {
         Debug.Log(hint_1 + "\n" + hint_2 + "\n" + hint_3);
@@ -108,12 +112,18 @@ public class force : MonoBehaviour
         //Debug.Log(hp.getPaused());
         if (hp != null && !hp.getPaused())
         {
+            Time.timeScale = 1;
             transform.Translate(Time.deltaTime * 2 * direction, 0, 0);
+        } else
+        {
+            Time.timeScale = 0;
         }
         
     }
     void Start()
     {
+
+        Random.seed = System.DateTime.Now.Millisecond;
 
         Debug.Log("1");
         //hp.paused = false;
@@ -140,11 +150,13 @@ public class force : MonoBehaviour
 
             word1 = actual_word.ToUpper();
             word_formed = new string(word1.Distinct().ToArray());
+            word_formed1 = word1;
             word_length = word_formed.Length;
+            word_length1 = word_formed1.Length;
             char_arr = word_formed.ToCharArray();
             remaining = new string(allCharacters.Except(char_arr).ToArray()).ToCharArray();
             Debug.Log("5");
-
+            //Comment an entire block
             for (int j = 0; j < word_length + 3; j++)
             {
                 if (j >= word_length)
@@ -157,6 +169,16 @@ public class force : MonoBehaviour
                     CorrectandIncorrect.Add(char_arr[j]);
                 }
             }
+            //Till here
+            for (int j = 0; j < word_length; j++)
+            {
+                Correct.Add(char_arr[j]);
+            }
+           for (int j = 0; j < remaining.Length; j++)
+            {
+                Incorrect.Add(remaining[j]);
+            }
+
             Debug.Log(new string(remaining.ToArray()));
         }
         Text t = gameObject.GetComponentInChildren<Text>();
@@ -165,11 +187,48 @@ public class force : MonoBehaviour
         Debug.Log(CorrectandIncorrect.Count);
         //if (i < CorrectandIncorrect.Count)
         {
-            //var random_index = Random.Range(0, char_arr.Length);
-            var random_index = Random.Range(0, CorrectandIncorrect.Count);
-            t.text = CorrectandIncorrect[random_index].ToString();
-           // i++;
+            var tmp_correct = Correct;
+            var tmp_incorrect = Incorrect;
 
+            if (gameObject.tag == "Letter1")
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter2")
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter3")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter4")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter5")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+
+            // i++;
+            Debug.Log(Incorrect);
+            Debug.Log(Correct);
         }
         //else if (i == char_arr.Length)
        // else if (i == CorrectandIncorrect.Count)
@@ -183,23 +242,24 @@ public class force : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (hp!=null && hp.getPaused())
-            return;
         Debug.Log(word_formed);
 		if (collision.gameObject.tag == "bullet")
 		{
+
             //GameObject g = Instantiate(collision.gameObject, new Vector3(0,0), transform.rotation);
             collision.gameObject.SetActive(false);
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Text t = gameObject.GetComponentInChildren<Text>();
-
-            if (word_formed.Contains(t.text[0]) && CorrectandIncorrect.Contains(t.text[0])) //Condition when it is a correct character  
+            Debug.Log(Incorrect);
+            Debug.Log(Correct);
+         
+            if (word_formed1.Contains(t.text[0])) //Condition when it is a correct character  
             {
                 var foundIndexes = new List<int>();
                 
 
-                for (int j = word_formed.IndexOf(t.text[0]); j > -1; j = word_formed.IndexOf(t.text[0], j+ 1))
+                for (int j = word_formed1.IndexOf(t.text[0]); j > -1; j = word_formed1.IndexOf(t.text[0], j+ 1))
                 {
                     // for loop end when i=-1 ('a' not found)
                     foundIndexes.Add(j);
@@ -212,6 +272,7 @@ public class force : MonoBehaviour
    
 
                 }
+
                 Debug.Log("Before collision" + new string(CorrectandIncorrect.ToArray()));
                 CorrectandIncorrect.Remove(t.text[0]);
                 Debug.Log("After collision" + new string(CorrectandIncorrect.ToArray()));
@@ -222,7 +283,7 @@ public class force : MonoBehaviour
                 CorrectandIncorrect.Add(remaining[random_index]);
 
                 wordCreated.text =new string(x);
-                if (wordCreated.text.Replace(" ", "").Equals(word_formed))
+                if (wordCreated.text.Replace(" ", "").Equals(word_formed1))
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
                     t11.text = "Yay!";
@@ -260,10 +321,75 @@ public class force : MonoBehaviour
                     
                 }
             }
-	     if (i < CorrectandIncorrect.Count) {
+
+
+
+            if (gameObject.tag == "Letter1" || gameObject.tag == "Letter2")
+            {
+                Correct.Remove(t.text[0]);
+            }
+            else
+            {
+                Incorrect.Remove(t.text[0]);
+            }
+
+            var tmp_correct = Correct;
+            var tmp_incorrect = Incorrect;
+
+            if (tmp_correct.Count == 0 && gameObject.tag == "Letter1")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter1")
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            else if (tmp_correct.Count == 0 && gameObject.tag == "Letter2")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter2")
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter3")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter4")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            else if (gameObject.tag == "Letter5")
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+
+            if (i < CorrectandIncorrect.Count) {
                 var random_index = Random.Range(0, CorrectandIncorrect.Count);
                 
-                t.text = CorrectandIncorrect[random_index].ToString();
+                //t.text = CorrectandIncorrect[random_index].ToString();
                 //t.text = "B";
                 i++;
                 
