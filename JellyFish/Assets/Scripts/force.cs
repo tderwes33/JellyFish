@@ -4,10 +4,18 @@ using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
+
 
 public class force : MonoBehaviour
 {
     public static int health = 3;
+
+    public static string actual_word = "";
+    public static string hint_1 = "";
+    public static string hint_2 = "";
+    public static string hint_3 = "";
+    public static string category = "";
 
     int direction = -1;
 
@@ -19,7 +27,7 @@ public class force : MonoBehaviour
     //public hints_panel hp;
 
     // Update is called once per frame
-    public static string word1="helps".ToUpper();
+    public static string word1=actual_word.ToUpper();
     public static string word_formed = new string(word1.Distinct().ToArray());
 
     hints_panel hp;
@@ -31,14 +39,74 @@ public class force : MonoBehaviour
     public static List<char> CorrectandIncorrect = new List<char>();
     static char[] remaining;
 
+    public string getHint()
+    {
+        Debug.Log(hint_1 + "\n" + hint_2 + "\n" + hint_3);
+        return hint_1 +"\n" + hint_2 +"\n"+ hint_3;
+    }
+
+    public string getCat()
+    {
+        Debug.Log(category);
+        return category;
+    }
+
+    class CSVReader
+    {
+        static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+        static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
+        static char[] TRIM_CHARS = { '\"' };
+
+        public static List<Dictionary<string, object>> Read(string file)
+        {
+            var list = new List<Dictionary<string, object>>();
+            TextAsset data = Resources.Load(file) as TextAsset;
+
+            var lines = Regex.Split(data.text, LINE_SPLIT_RE);
+
+            if (lines.Length <= 1) return list;
+
+            var header = Regex.Split(lines[0], SPLIT_RE);
+            for (var i = 1; i < lines.Length; i++)
+            {
+
+                var values = Regex.Split(lines[i], SPLIT_RE);
+                if (values.Length == 0 || values[0] == "") continue;
+
+                var entry = new Dictionary<string, object>();
+                for (var j = 0; j < header.Length && j < values.Length; j++)
+                {
+                    string value = values[j];
+                    value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
+                    object finalvalue = value;
+                    int n;
+                    float f;
+                    if (int.TryParse(value, out n))
+                    {
+                        finalvalue = n;
+                    }
+                    else if (float.TryParse(value, out f))
+                    {
+                        finalvalue = f;
+                    }
+                    entry[header[j]] = finalvalue;
+                }
+                list.Add(entry);
+            }
+            return list;
+        }
+    }
+
+
+
 
     //static public char[] char_arr1 = "brunda".ToCharArray();
 
     void Update()
     {
         //hp = gameObject.AddComponent<hints_panel>();
-        //Debug.Log(hp.paused);
-        if (!hp.getPaused())
+        //Debug.Log(hp.getPaused());
+        if (hp != null && !hp.getPaused())
         {
             transform.Translate(Time.deltaTime * 2 * direction, 0, 0);
         }
@@ -46,16 +114,36 @@ public class force : MonoBehaviour
     }
     void Start()
     {
+
+        Debug.Log("1");
         //hp.paused = false;
         h1 = GameObject.FindGameObjectWithTag("heart1");
         h2 = GameObject.FindGameObjectWithTag("heart2");
         h3 = GameObject.FindGameObjectWithTag("heart3");
         // game object reference put using unity ui only
+        Debug.Log("2");
 
         if (remaining == null)
         {
-       
+            Debug.Log("21");
+
+            List<Dictionary<string, object>> data = CSVReader.Read("data");
+            var random_index_1 = Random.Range(0, data.Count);
+            Debug.Log("3");
+
+            actual_word = data[random_index_1]["word"].ToString();
+            hint_1 = data[random_index_1]["Hint 1"].ToString();
+            hint_2 = data[random_index_1]["Hint 2"].ToString();
+            hint_3 = data[random_index_1]["Hint 3"].ToString();
+            category = data[random_index_1]["Category"].ToString();
+            Debug.Log("4");
+
+            word1 = actual_word.ToUpper();
+            word_formed = new string(word1.Distinct().ToArray());
+            word_length = word_formed.Length;
+            char_arr = word_formed.ToCharArray();
             remaining = new string(allCharacters.Except(char_arr).ToArray()).ToCharArray();
+            Debug.Log("5");
 
             for (int j = 0; j < word_length + 3; j++)
             {
@@ -95,7 +183,7 @@ public class force : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (hp.getPaused())
+        if (hp!=null && hp.getPaused())
             return;
         Debug.Log(word_formed);
 		if (collision.gameObject.tag == "bullet")

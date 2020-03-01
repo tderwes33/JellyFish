@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class hints_panel : MonoBehaviour
 {
-
+    private force f;
     public static Boolean paused = false;
     public GameObject Panel;
 
@@ -53,7 +53,9 @@ public class hints_panel : MonoBehaviour
         txt = gameObject.GetComponent<Text>() as Text;
         if (txt != null)
         {
-            txt.text = "Hint : ABC";
+            Debug.Log(f.getHint());
+
+            txt.text = "Hint : "+f.getHint();
         }
     }
 
