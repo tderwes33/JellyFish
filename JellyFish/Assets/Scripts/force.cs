@@ -95,6 +95,8 @@ public class force : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (hp.getPaused())
+            return;
         Debug.Log(word_formed);
 		if (collision.gameObject.tag == "bullet")
 		{
@@ -103,9 +105,6 @@ public class force : MonoBehaviour
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Text t = gameObject.GetComponentInChildren<Text>();
-
-
-           
 
             if (word_formed.Contains(t.text[0]) && CorrectandIncorrect.Contains(t.text[0])) //Condition when it is a correct character  
             {
@@ -125,7 +124,7 @@ public class force : MonoBehaviour
    
 
                 }
-                Debug.Log("BEfore collision" + new string(CorrectandIncorrect.ToArray()));
+                Debug.Log("Before collision" + new string(CorrectandIncorrect.ToArray()));
                 CorrectandIncorrect.Remove(t.text[0]);
                 Debug.Log("After collision" + new string(CorrectandIncorrect.ToArray()));
                 int random_index;
@@ -135,10 +134,20 @@ public class force : MonoBehaviour
                 CorrectandIncorrect.Add(remaining[random_index]);
 
                 wordCreated.text =new string(x);
+                if (wordCreated.text.Replace(" ", "").Equals(word_formed))
+                {
+                    Text t11 = gameover.GetComponentInChildren<Text>();
+                    t11.text = "Yay!";
+                    gameover.SetActive(true);
+                    hp.setPaused(true);
+                    hp.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
+                    collision.gameObject.SetActive(false);
+                }
             }
-           
-          
-	else {
+
+
+            else {
             /** decrement health **/
             health--;
 
@@ -151,18 +160,25 @@ public class force : MonoBehaviour
                 h2.SetActive(false);
             }
             else if (health == 0)
-            {
-                h3.SetActive(false);
-                gameover.SetActive(true);
+                {
+                    Text t11 = gameover.GetComponentInChildren<Text>();
+                    t11.text = "Game Over!";
+                    gameover.SetActive(true);
+                    hp.setPaused(true);
+                    hp.gameObject.SetActive(false);
+                    gameObject.SetActive(false);
+                    collision.gameObject.SetActive(false);
+                    h3.SetActive(false);
+                    
+                }
             }
-           }
 	     if (i < CorrectandIncorrect.Count) {
                 var random_index = Random.Range(0, CorrectandIncorrect.Count);
                 
                 t.text = CorrectandIncorrect[random_index].ToString();
                 //t.text = "B";
                 i++;
-
+                
             }
             else if (i == CorrectandIncorrect.Count)
             {

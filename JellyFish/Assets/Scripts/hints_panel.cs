@@ -13,7 +13,7 @@ public class hints_panel : MonoBehaviour
 
     public void OpenPanel()
     {
-
+        
         if (Panel != null)
         {
             //Debug.Log(paused);
@@ -35,6 +35,11 @@ public class hints_panel : MonoBehaviour
     public Boolean getPaused()
     {
         return paused;
+    }
+
+    public void setPaused(bool bo)
+    {
+        paused = bo;
     }
 
     Text txt;
