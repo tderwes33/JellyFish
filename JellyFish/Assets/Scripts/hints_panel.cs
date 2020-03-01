@@ -47,9 +47,10 @@ public class hints_panel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-       
-            //txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
+
+        f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
+
+        //txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
         txt = gameObject.GetComponent<Text>() as Text;
         if (txt != null)
         {
