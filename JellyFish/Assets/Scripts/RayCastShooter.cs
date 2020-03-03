@@ -167,9 +167,8 @@ public class RayCastShooter : MonoBehaviour {
     public void Update () {
 
         //bool isPanelActive = Panel;
-
-
         
+
 
         if (!Panel.activeSelf)
 
@@ -200,7 +199,9 @@ public class RayCastShooter : MonoBehaviour {
 				bullet.transform.position = new Vector2(px, py);
 
 				return;
-			}
+			} else
+            {
+            }
 
 			if (dots == null)
 				return;

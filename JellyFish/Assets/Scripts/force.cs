@@ -138,6 +138,12 @@ public class force : MonoBehaviour
             transform.Translate(Time.deltaTime * 2 * direction, 0, 0);
         } else
         {
+            RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
+            bull.bullet.gameObject.SetActive(false);
+            bull.dots.Clear();
+            bull.bulletProgress = 0.0f;
+            bull.dotsPool.Clear();
+            bull.InitPath();
             Time.timeScale = 0;
         }
         
