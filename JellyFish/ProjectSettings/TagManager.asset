@@ -21,6 +21,9 @@ TagManager:
   - gameover
   - wordCreated
   - hint_button
+  - restart_Button
+  - Life
+  - category
   layers:
   - Default
   - TransparentFX

@@ -6,18 +6,18 @@ using UnityEngine.UI;
 public class display_category : MonoBehaviour
 {
     Text txt;
-    force f;
+    //force f;
     // Start is called before the first frame update
     void Start()
     {
-        f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
+        //f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
         txt = gameObject.GetComponent<Text>();
-        txt.text = "Category :  "+f.getCat();
+        //txt.text = "Category :  "+f.getCat();
     }
 
     // Update is called once per frame
-    void Update()
+    public void doUpdate(string t)
     {
-        
+        txt.text = "Category :  " + t;
     }
 }

@@ -20,7 +20,6 @@ public class RayCastShooter : MonoBehaviour {
     public float dotGap = 0.32f;
     public float bulletProgress = 0.0f;
     public float bulletIncrement = 0.0f;
-	public Text wordCreated;
 	public int type = 0;
     public UnityEngine.UI.Button yourButton;
 	//declare a boolean
@@ -67,16 +66,7 @@ public class RayCastShooter : MonoBehaviour {
 		//select initial type
 		SetNextType();
         //wordCreated = GameObject.FindGameObjectWithTag("wordCreated").GetComponent<Text>();
-        string s = "";
-        int totalLength = 0;
-        while (totalLength != forceFile.word_length1)
-        {
-            Debug.Log("Step 1");
-            s += "_ ";
-            totalLength += 1;
-        }
-        Debug.Log("Step 2");
-        wordCreated.text = s;
+
 	}
 
     public void SetNextType () {
@@ -179,14 +169,7 @@ public class RayCastShooter : MonoBehaviour {
         //bool isPanelActive = Panel;
 
 
-        if (hp != null && !hp.getPaused() )
-        {
-            
-        }
-        else
-        {
-            
-        }
+        
 
         if (!Panel.activeSelf)
 

@@ -8,17 +8,34 @@ using UnityEngine.UI;
 public class hints_panel : MonoBehaviour
 {
     private force f;
-    public static Boolean paused = false;
     public GameObject Panel;
+    public static int score;
+    static Text txt;
 
+    public int addscore(int i)
+    {
+        score += i;
+        return score;
+    }
     public void OpenPanel()
     {
         
         if (Panel != null)
         {
+            f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
+
             //Debug.Log(paused);
-            paused = true;
+            f.setPaused(true);
+
             Panel.SetActive(true);
+            txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
+            //txt = gameObject.GetComponent<Text>();
+            if (txt != null)
+            {
+                Debug.Log(f.getHint());
+
+                txt.text = "Hint : " + f.getHint();
+            }
         }
     }
 
@@ -27,43 +44,21 @@ public class hints_panel : MonoBehaviour
 
         if (Panel != null)
         {
-            paused = false;
+            f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
+
+            f.setPaused(false);
             Panel.SetActive(false);
 
         }
     }
 
-    public Boolean getPaused()
-    {
-        return paused;
-    }
 
-    public void setPaused(bool bo)
-    {
-        paused = bo;
-    }
-
-    Text txt;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
-
-        //txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
-        txt = gameObject.GetComponent<Text>() as Text;
-        if (txt != null)
-        {
-            Debug.Log(f.getHint());
-
-            txt.text = "Hint : "+f.getHint();
-        }
+       
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
 }
