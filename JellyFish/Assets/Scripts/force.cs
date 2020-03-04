@@ -153,7 +153,7 @@ public class force : MonoBehaviour
         if (!getPaused())
         {
             Time.timeScale = 1;
-            transform.Translate(Time.deltaTime * 1.5f * direction, 0, 0);
+            transform.Translate(Time.deltaTime * 1 * direction, 0, 0);
         } else
         {
             RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
@@ -180,6 +180,7 @@ public class force : MonoBehaviour
         }
         setReset(false);
         health = 3;
+        
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         gameObject.SetActive(false);
         if (bullet != null)
@@ -194,6 +195,9 @@ public class force : MonoBehaviour
         h2.GetComponentInChildren<SpriteRenderer>().color = opaque;
         h3 = GameObject.FindGameObjectWithTag("heart3");
         h3.GetComponentInChildren<SpriteRenderer>().color = opaque;
+        //h1.SetActive(true);
+        //h2.SetActive(true);
+        //h3.SetActive(true);
 
         List<Dictionary<string, object>> data = CSVReader.Read("data");
         var random_index_1 = Random.Range(0, data.Count);
@@ -258,7 +262,8 @@ public class force : MonoBehaviour
         // else if (i == CorrectandIncorrect.Count)
 
         updateLetters();
-        
+      
+
     }
 
     void updateLetters()
@@ -450,8 +455,38 @@ void Start()
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(word_formed);
-		if (collision.gameObject.tag == "bullet")
-		{
+        if (collision.gameObject.tag == "bullet" && gameObject.tag == "Letter5")
+        {
+            collision.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+            Invoke("ResetBall", 0.2f);
+            Debug.Log("hit heart");
+            if (health == 3)
+            {
+                // do nothing
+                Debug.Log("health=" + health);
+            }
+            else if (health <= 2)
+            {
+                // increase health
+                health++;
+                if (health == 3)
+                {
+                    Debug.Log("health=" + health);
+                    //h1.SetActive(true);
+                    h1.GetComponentInChildren<SpriteRenderer>().color = opaque;
+                }
+                else if (health == 2)
+                {
+                    Debug.Log("health=" + health);
+                    //h2.SetActive(true);
+                    h2.GetComponentInChildren<SpriteRenderer>().color = opaque;
+                }
+            }
+        }
+
+        else if(collision.gameObject.tag == "bullet")
+        {
 
             //GameObject g = Instantiate(collision.gameObject, new Vector3(0,0), transform.rotation);
             collision.gameObject.SetActive(false);
@@ -460,13 +495,13 @@ void Start()
             Text t = gameObject.GetComponentInChildren<Text>();
             Debug.Log(Incorrect);
             Debug.Log(Correct);
-         
+
             if (word_formed1.Contains(t.text[0])) //Condition when it is a correct character  
             {
                 var foundIndexes = new List<int>();
-                
 
-                for (int j = word_formed1.IndexOf(t.text[0]); j > -1; j = word_formed1.IndexOf(t.text[0], j+ 1))
+
+                for (int j = word_formed1.IndexOf(t.text[0]); j > -1; j = word_formed1.IndexOf(t.text[0], j + 1))
                 {
                     // for loop end when i=-1 ('a' not found)
                     foundIndexes.Add(j);
@@ -475,7 +510,7 @@ void Start()
                 Debug.Log(x.ToString());
                 for (int j = 0; j < foundIndexes.Count; j++)
                 {
-                    x[foundIndexes[j] * 2]= t.text[0];
+                    x[foundIndexes[j] * 2] = t.text[0];
 
                 }
 
@@ -483,12 +518,14 @@ void Start()
                 CorrectandIncorrect.Remove(t.text[0]);
                 Debug.Log("After collision" + new string(CorrectandIncorrect.ToArray()));
                 int random_index;
-                do { random_index = Random.Range(0, remaining.Length);
+                do
+                {
+                    random_index = Random.Range(0, remaining.Length);
                 }
                 while (CorrectandIncorrect.Contains(remaining[random_index]));
                 CorrectandIncorrect.Add(remaining[random_index]);
 
-                wordCreated.text =new string(x);
+                wordCreated.text = new string(x);
                 if (wordCreated.text.Replace(" ", "").Equals(word_formed1))
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
@@ -505,20 +542,23 @@ void Start()
             }
 
 
-            else {
-            /** decrement health **/
-            health--;
-                //new_hint = 1;
-            if (health == 2)
+            else
             {
+                /** decrement health **/
+                health--;
+                //new_hint = 1;
+                if (health == 2)
+                {
                     h1.GetComponentInChildren<SpriteRenderer>().color = trans;
-                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color=Color.red;
+                    //h1.SetActive(false);
+                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.red;
                 }
 
-                else if(health==1){
+                else if (health == 1)
+                {
                     h2.GetComponentInChildren<SpriteRenderer>().color = trans;
-
-                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color=Color.green;
+                    //h2.SetActive(false);
+                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.green;
 
                 }
                 else if (health == 0)
@@ -531,7 +571,7 @@ void Start()
                     gameObject.SetActive(true);
                     collision.gameObject.SetActive(false);
                     h3.GetComponentInChildren<SpriteRenderer>().color = trans;
-
+                    //h3.SetActive(false);
                     //TODO
                     restart_Button.SetActive(true);
                 }
@@ -595,33 +635,35 @@ void Start()
             }
             else if (gameObject.tag == "Letter5")
             {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
+                //var random_index = Random.Range(0, tmp_incorrect.Count);
 
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
+                //t.text = tmp_incorrect[random_index].ToString();
+                //tmp_incorrect.Remove(t.text[0]);
             }
 
-            if (i < CorrectandIncorrect.Count) {
+            if (i < CorrectandIncorrect.Count)
+            {
                 var random_index = Random.Range(0, CorrectandIncorrect.Count);
-                
+
                 //t.text = CorrectandIncorrect[random_index].ToString();
                 //t.text = "B";
                 i++;
-                
+
             }
             else if (i == CorrectandIncorrect.Count)
             {
-                
+
                 i = 0;
             }
 
 
-            
+
         }
-        else if(collision.gameObject.tag == "SideWall")
-		{
-			direction *= -1;
-		}
+        else if (collision.gameObject.tag == "SideWall")
+        {
+            direction *= -1;
+        }
+        
         
     }
     public void ResetBall()
