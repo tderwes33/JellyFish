@@ -7,7 +7,7 @@
       <File FileName="Assets/Scripts/display_category.cs" />
       <File FileName="Assets/Scripts/Ball.cs" />
       <File FileName="Assets/Scripts/Bullet.cs" />
-      <File FileName="Assets/Scripts/force.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/force.cs" Line="324" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

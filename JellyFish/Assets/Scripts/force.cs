@@ -15,7 +15,7 @@ public class force : MonoBehaviour
     public int temp_flag = 0;
 
     public static int health = 3;
-
+    public static int level = 1;
     public static string actual_word = "";
     public static string hint_1 = "";
     public static string hint_2 = "";
@@ -146,14 +146,14 @@ public class force : MonoBehaviour
 
     void Update()
     {
-        //hp = gameObject.AddComponent<hints_panel>();
+        //hp = gameObject.AddComponent<hints_panel>();s
         //Debug.Log(hp.getPaused());
         if (gameObject.tag == "restart_Button")
             return;
         if (!getPaused())
         {
             Time.timeScale = 1;
-            transform.Translate(Time.deltaTime * 1 * direction, 0, 0);
+            transform.Translate(Time.deltaTime * 0.1f*level * direction, 0, 0);
         } else
         {
             RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
@@ -180,7 +180,7 @@ public class force : MonoBehaviour
         }
         setReset(false);
         health = 3;
-        
+        GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : "+level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         gameObject.SetActive(false);
         if (bullet != null)
@@ -321,6 +321,7 @@ void Start()
         if (gameObject.tag == "restart_Button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;
+        GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : " + level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         Debug.Log("1");
         //hp.paused = false;
@@ -532,6 +533,9 @@ void Start()
                     t11.text = "Yay!";
                     gameover.SetActive(true);
                     setReset(true);
+                    Debug.Log("Level completed " + level);
+                    level += 1;
+                    
                     //hp.gameObject.SetActive(false);
                     gameObject.SetActive(true);
                     collision.gameObject.SetActive(false);

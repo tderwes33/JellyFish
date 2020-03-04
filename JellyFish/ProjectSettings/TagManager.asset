@@ -24,6 +24,7 @@ TagManager:
   - restart_Button
   - Life
   - category
+  - level
   layers:
   - Default
   - TransparentFX
