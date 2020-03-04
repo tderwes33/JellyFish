@@ -9,6 +9,11 @@ using System.Text.RegularExpressions;
 
 public class force : MonoBehaviour
 {
+
+
+    public int new_hint = 0;
+    public int temp_flag = 0;
+
     public static int health = 3;
 
     public static string actual_word = "";
@@ -65,8 +70,21 @@ public class force : MonoBehaviour
     }
     public string getHint()
     {
-        Debug.Log(hint_1 + "\n" + hint_2 + "\n" + hint_3);
-        return hint_1 +"\n" + hint_2 +"\n"+ hint_3;
+        string hint = "";
+        //if(h1.GetComponentInChildren<SpriteRenderer>().color == trans)
+        {
+            hint = hint + "\n" + hint_1;
+        }
+        if (h1.GetComponentInChildren<SpriteRenderer>().color == trans)
+        {
+            hint = hint + "\n" + hint_2;
+        }
+        if (h2.GetComponentInChildren<SpriteRenderer>().color == trans)
+        {
+            hint = hint + "\n" + hint_3;
+        }
+        Debug.Log(hint);
+        return hint;
     }
 
     public string getCat()
@@ -135,7 +153,7 @@ public class force : MonoBehaviour
         if (!getPaused())
         {
             Time.timeScale = 1;
-            transform.Translate(Time.deltaTime * 2 * direction, 0, 0);
+            transform.Translate(Time.deltaTime * 1.5f * direction, 0, 0);
         } else
         {
             RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
@@ -147,6 +165,7 @@ public class force : MonoBehaviour
             bull.DrawPaths();
             Time.timeScale = 0;
         }
+        
         
     }
 
@@ -161,7 +180,7 @@ public class force : MonoBehaviour
         }
         setReset(false);
         health = 3;
-
+        GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         gameObject.SetActive(false);
         if (bullet != null)
             bullet.SetActive(true);
@@ -297,7 +316,7 @@ void Start()
         if (gameObject.tag == "restart_Button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;
-
+        GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         Debug.Log("1");
         //hp.paused = false;
         h1 = GameObject.FindGameObjectWithTag("heart1");
@@ -489,15 +508,17 @@ void Start()
             else {
             /** decrement health **/
             health--;
-
+                //new_hint = 1;
             if (health == 2)
             {
                     h1.GetComponentInChildren<SpriteRenderer>().color = trans;
-
+                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color=Color.red;
                 }
 
                 else if(health==1){
                     h2.GetComponentInChildren<SpriteRenderer>().color = trans;
+
+                    GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color=Color.green;
 
                 }
                 else if (health == 0)

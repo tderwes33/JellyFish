@@ -120,7 +120,9 @@ MonoBehaviour:
   h2: {fileID: 0}
   h3: {fileID: 0}
   gameover: {fileID: 0}
+  restart_Button: {fileID: 0}
   word_length: 5
+  word_length1: 0
   wordCreated: {fileID: 0}
 --- !u!58 &58618246948220172
 CircleCollider2D:
