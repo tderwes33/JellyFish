@@ -15,7 +15,7 @@ public class RayCastShooter : MonoBehaviour {
     public bool mouseDown = false;
     public List<Vector2> dots;
     public List<GameObject> dotsPool;
-    public int maxDots = 260;
+    public int maxDots = 26;
 
     public float dotGap = 0.32f;
     public float bulletProgress = 0.0f;

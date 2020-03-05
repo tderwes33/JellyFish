@@ -55,6 +55,14 @@ public class force : MonoBehaviour
     public static bool paused = false;
     public static bool reset = false;
 
+    public static List<int[]> letter_sort = new List<int[]>();
+   
+    public int increment_letter_selection()
+    {
+        return Random.Range(0, letter_sort.Count);
+    
+    }
+    
     public bool getPaused()
     {
         return reset || paused;
@@ -70,18 +78,18 @@ public class force : MonoBehaviour
     }
     public string getHint()
     {
-        string hint = "";
+        string hint = "Hints";
         //if(h1.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n" + hint_1;
+            hint = hint + "\n1. " + hint_1;
         }
         if (h1.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n" + hint_2;
+            hint = hint + "\n2. " + hint_2;
         }
         if (h2.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n" + hint_3;
+            hint = hint + "\n3. " + hint_3;
         }
         Debug.Log(hint);
         return hint;
@@ -156,35 +164,35 @@ public class force : MonoBehaviour
             transform.Translate(Time.deltaTime * 0.1f*level * direction, 0, 0);
         } else
         {
+           
+            Time.timeScale = 0;
             RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
             //bull.gameObject.SetActive(false);
             bull.bullet.gameObject.SetActive(false);
+            foreach (var d in bull.dotsPool)
+                d.SetActive(false);
             bull.dots.Clear();
             bull.bulletProgress = 0.0f;
-            //bull.dotsPool.Clear();
-            bull.DrawPaths();
-            Time.timeScale = 0;
+
         }
-        
-        
+
+
     }
 
     public void Reset()
     {
         if(gameover!=null)
-        gameover.SetActive(false);
+            gameover.SetActive(false);
         //hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
-        if (hp != null)
-        {
-            
-        }
+
+        
         setReset(false);
         health = 3;
         GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : "+level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         gameObject.SetActive(false);
-        if (bullet != null)
-            bullet.SetActive(true);
+        //if (bullet != null)
+         //   bullet.SetActive(true);
         Incorrect = new List<char>();
         Correct = new List<char>();
         CorrectandIncorrect = new List<char>();
@@ -244,11 +252,11 @@ public class force : MonoBehaviour
 
         Debug.Log(new string(remaining.ToArray()));
 
-        
-            // i++;
-            Debug.Log(Incorrect);
-            Debug.Log(Correct);
-            string s = "";
+
+        // i++;
+        Debug.Log(new string(Incorrect.ToArray()));
+        Debug.Log(new string(Correct.ToArray()));
+        string s = "";
             int totalLength = 0;
             while (totalLength != word_length1)
             {
@@ -268,43 +276,85 @@ public class force : MonoBehaviour
 
     void updateLetters()
     {
-        Text t = gameObject.GetComponentInChildren<Text>();
-        Debug.Log(t.text);
+        Text t;
+        Debug.Log("Updating letters");
         //if (i < char_arr.Length)
-        Debug.Log(CorrectandIncorrect.Count);
         //if (i < CorrectandIncorrect.Count)
+        int selection = increment_letter_selection();
         {
-            var tmp_correct = Correct;
-            var tmp_incorrect = Incorrect;
+            List<char> tmp_correct = new List<char>(Correct);
+            List<char> tmp_incorrect = new List<char>(Incorrect);
 
-            t = GameObject.FindGameObjectWithTag("Letter1").GetComponentInChildren<Text>();
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
+            Debug.Log(new string(tmp_correct.ToArray()));
+            Debug.Log(new string(tmp_incorrect.ToArray()));
 
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            t = GameObject.FindGameObjectWithTag("Letter2").GetComponentInChildren<Text>();
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
+            GameObject g1 = GameObject.FindGameObjectWithTag("Letter1");
+            GameObject g2 = GameObject.FindGameObjectWithTag("Letter2");
+            GameObject g3 = GameObject.FindGameObjectWithTag("Letter3");
+            GameObject g4 = GameObject.FindGameObjectWithTag("Letter4");
+            GameObject g5 = GameObject.FindGameObjectWithTag("Letter5");
+            Vector3 pos = g1.transform.position;
+            pos.y = 3;
+            g1.transform.position = pos;
+            pos = g2.transform.position;
+            pos.y = 1;
+            g2.transform.position = pos;
+            pos = g3.transform.position;
+            pos.y = 2;
+            g3.transform.position = pos;
+            pos = g4.transform.position;
+            pos.y = 0;
+            g4.transform.position = pos;
+            pos = g5.transform.position;
+            pos.y = 4;
+            g5.transform.position = pos;
 
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            t = GameObject.FindGameObjectWithTag("Letter3").GetComponentInChildren<Text>();
+            t = GameObject.FindGameObjectWithTag("Letter"+ letter_sort[selection][0]).GetComponentInChildren<Text>();
+            if (tmp_correct.Count == 0)
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
 
                 t.text = tmp_incorrect[random_index].ToString();
                 tmp_incorrect.Remove(t.text[0]);
             }
-            t = GameObject.FindGameObjectWithTag("Letter4").GetComponentInChildren<Text>();
+            else
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            
+
+            t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][1]).GetComponentInChildren<Text>();
+            if (tmp_correct.Count == 0)
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            } else
+            {
+                var random_index = Random.Range(0, tmp_correct.Count);
+
+                t.text = tmp_correct[random_index].ToString();
+                tmp_correct.Remove(t.text[0]);
+            }
+            t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][2]).GetComponentInChildren<Text>();
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
 
                 t.text = tmp_incorrect[random_index].ToString();
                 tmp_incorrect.Remove(t.text[0]);
             }
+            t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][3]).GetComponentInChildren<Text>();
+            {
+                var random_index = Random.Range(0, tmp_incorrect.Count);
+
+                t.text = tmp_incorrect[random_index].ToString();
+                tmp_incorrect.Remove(t.text[0]);
+            }
+            /*
             t = GameObject.FindGameObjectWithTag("Letter5").GetComponentInChildren<Text>();
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
@@ -312,7 +362,7 @@ public class force : MonoBehaviour
                 t.text = tmp_incorrect[random_index].ToString();
                 tmp_incorrect.Remove(t.text[0]);
             }
-
+            */
         }
     }
 
@@ -321,6 +371,33 @@ void Start()
         if (gameObject.tag == "restart_Button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;
+        if(letter_sort.Count == 0)
+        {
+            letter_sort.Add(new int[] { 1, 2, 3, 4 });
+            letter_sort.Add(new int[] { 2, 1, 3, 4 });
+            letter_sort.Add(new int[] { 3, 1, 2, 4 });
+            letter_sort.Add(new int[] { 1, 3, 2, 4 });
+            letter_sort.Add(new int[] { 2, 3, 1, 4 });
+            letter_sort.Add(new int[] { 3, 2, 1, 4 });
+            letter_sort.Add(new int[] { 3, 2, 4, 1 });
+            letter_sort.Add(new int[] { 2, 3, 4, 1 });
+            letter_sort.Add(new int[] { 4, 3, 2, 1 });
+            letter_sort.Add(new int[] { 3, 4, 2, 1 });
+            letter_sort.Add(new int[] { 2, 4, 3, 1 });
+            letter_sort.Add(new int[] { 4, 2, 3, 1 });
+            letter_sort.Add(new int[] { 4, 1, 3, 2 });
+            letter_sort.Add(new int[] { 1, 4, 3, 2 });
+            letter_sort.Add(new int[] { 3, 4, 1, 2 });
+            letter_sort.Add(new int[] { 4, 3, 1, 2 });
+            letter_sort.Add(new int[] { 1, 3, 4, 2 });
+            letter_sort.Add(new int[] { 3, 1, 4, 2 });
+            letter_sort.Add(new int[] { 2, 1, 4, 3 });
+            letter_sort.Add(new int[] { 1, 2, 4, 3 });
+            letter_sort.Add(new int[] { 4, 2, 1, 3 });
+            letter_sort.Add(new int[] { 2, 4, 1, 3 });
+            letter_sort.Add(new int[] { 1, 4, 2, 3 });
+            letter_sort.Add(new int[] { 4, 1, 2, 3 });
+        }
         GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : " + level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
         Debug.Log("1");
@@ -395,59 +472,23 @@ void Start()
                 Debug.Log("Step 2");
                 wordCreated.text = s;
                 // i++;
-                Debug.Log(Incorrect);
-                Debug.Log(Correct);
+                Debug.Log(new string(Incorrect.ToArray()));
+                Debug.Log(new string(Correct.ToArray()));
 
                 //else if (i == char_arr.Length)
                 // else if (i == CorrectandIncorrect.Count)
 
+        updateLetters();
 
             }
-        
-    Text t = gameObject.GetComponentInChildren<Text>();
-    Debug.Log(t.text);
+
+    //Text t = gameObject.GetComponentInChildren<Text>();
+    //Debug.Log(t.text);
             //if (i < char_arr.Length)
             Debug.Log(CorrectandIncorrect.Count);
         //if (i < CorrectandIncorrect.Count)
         {
-            var tmp_correct = Correct;
-            var tmp_incorrect = Incorrect;
-
-            if (gameObject.tag == "Letter1")
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
-
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter2")
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
-
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter3")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter4")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter5")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
+            
             hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
 
         }
@@ -485,7 +526,6 @@ void Start()
                 }
             }
         }
-
         else if(collision.gameObject.tag == "bullet")
         {
 
@@ -494,8 +534,8 @@ void Start()
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Text t = gameObject.GetComponentInChildren<Text>();
-            Debug.Log(Incorrect);
-            Debug.Log(Correct);
+            Debug.Log(new string(Incorrect.ToArray()));
+            Debug.Log(new string(Correct.ToArray()));
 
             if (word_formed1.Contains(t.text[0])) //Condition when it is a correct character  
             {
@@ -537,11 +577,12 @@ void Start()
                     level += 1;
                     
                     //hp.gameObject.SetActive(false);
+                    //collision.gameObject.SetActive(false);
                     gameObject.SetActive(true);
-                    collision.gameObject.SetActive(false);
                     //TODO
                     bullet = collision.gameObject;
                     restart_Button.SetActive(true);
+                    return;
                 }
             }
 
@@ -563,7 +604,7 @@ void Start()
                     h2.GetComponentInChildren<SpriteRenderer>().color = trans;
                     //h2.SetActive(false);
                     GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.green;
-
+                    
                 }
                 else if (health == 0)
                 {
@@ -572,18 +613,19 @@ void Start()
                     gameover.SetActive(true);
                     setReset(true);
                     //hp.gameObject.SetActive(false);
-                    gameObject.SetActive(true);
                     collision.gameObject.SetActive(false);
+                    gameObject.SetActive(true);
                     h3.GetComponentInChildren<SpriteRenderer>().color = trans;
                     //h3.SetActive(false);
                     //TODO
                     restart_Button.SetActive(true);
+                    return;
                 }
             }
 
 
 
-            if (gameObject.tag == "Letter1" || gameObject.tag == "Letter2")
+            if (Correct.Contains(t.text[0]))
             {
                 Correct.Remove(t.text[0]);
             }
@@ -591,74 +633,8 @@ void Start()
             {
                 Incorrect.Remove(t.text[0]);
             }
-
-            var tmp_correct = Correct;
-            var tmp_incorrect = Incorrect;
-
-            if (tmp_correct.Count == 0 && gameObject.tag == "Letter1")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter1")
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
-
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            else if (tmp_correct.Count == 0 && gameObject.tag == "Letter2")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter2")
-            {
-                var random_index = Random.Range(0, tmp_correct.Count);
-
-                t.text = tmp_correct[random_index].ToString();
-                tmp_correct.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter3")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter4")
-            {
-                var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                t.text = tmp_incorrect[random_index].ToString();
-                tmp_incorrect.Remove(t.text[0]);
-            }
-            else if (gameObject.tag == "Letter5")
-            {
-                //var random_index = Random.Range(0, tmp_incorrect.Count);
-
-                //t.text = tmp_incorrect[random_index].ToString();
-                //tmp_incorrect.Remove(t.text[0]);
-            }
-
-            if (i < CorrectandIncorrect.Count)
-            {
-                var random_index = Random.Range(0, CorrectandIncorrect.Count);
-
-                //t.text = CorrectandIncorrect[random_index].ToString();
-                //t.text = "B";
-                i++;
-
-            }
-            else if (i == CorrectandIncorrect.Count)
-            {
-
-                i = 0;
-            }
+            gameObject.SetActive(true);
+            updateLetters();
 
 
 

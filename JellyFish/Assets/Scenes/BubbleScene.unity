@@ -216,7 +216,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -225,7 +225,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Reset!
+  m_Text: Another one!
 --- !u!222 &152731094
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1085,7 +1085,12 @@ PrefabInstance:
     - target: {fileID: 1458023571398730958, guid: 4a71d099c56154eedb06361948c6e894,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.15
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1458023571398730958, guid: 4a71d099c56154eedb06361948c6e894,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1458023571398730957, guid: 4a71d099c56154eedb06361948c6e894,
         type: 3}
@@ -1178,6 +1183,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 1cc7bf9ccbfe646a492c2419c35c7b36,
         type: 3}
+    - target: {fileID: 7877645490935367104, guid: 4a71d099c56154eedb06361948c6e894,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a71d099c56154eedb06361948c6e894, type: 3}
 --- !u!1 &778759351
@@ -1442,7 +1452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.009433985, g: 0.0008454984, b: 0.0008454984, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2271,7 +2281,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3313,8 +3323,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1871825146}
   - component: {fileID: 1871825148}
-  - component: {fileID: 1871825147}
   - component: {fileID: 1871825149}
+  - component: {fileID: 1871825147}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3338,10 +3348,10 @@ RectTransform:
   m_Father: {fileID: 2008359356}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -150, y: 400}
-  m_SizeDelta: {x: 300, y: -800}
+  m_SizeDelta: {x: 490, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871825147
 MonoBehaviour:
@@ -3356,13 +3366,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5254902}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

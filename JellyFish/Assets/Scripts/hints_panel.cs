@@ -34,7 +34,7 @@ public class hints_panel : MonoBehaviour
             {
                 Debug.Log(f.getHint());
 
-                txt.text = "Hint : " + f.getHint();
+                txt.text = f.getHint();
             }
         }
     }
