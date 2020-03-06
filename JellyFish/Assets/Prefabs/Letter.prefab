@@ -116,11 +116,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde78e556f2ec77458b800e51ca42343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  new_hint: 0
+  temp_flag: 0
   h1: {fileID: 0}
   h2: {fileID: 0}
   h3: {fileID: 0}
   gameover: {fileID: 0}
   restart_Button: {fileID: 0}
+  reset_canvas: {fileID: 0}
   word_length: 5
   word_length1: 0
   wordCreated: {fileID: 0}
@@ -139,7 +142,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.2949998
+  m_Radius: 3.295
 --- !u!1 &3518187747828323766
 GameObject:
   m_ObjectHideFlags: 0

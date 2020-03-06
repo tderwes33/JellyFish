@@ -618,7 +618,8 @@ void Start()
                 else if (health == 0)
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
-                    t11.text = "Game Over!";
+                    Debug.Log(word1);
+                    t11.text = "Game Over!\nCorrect Word: "+actual_word.ToUpper();
                     gameover.SetActive(true);
                     setReset(true);
                     //hp.gameObject.SetActive(false);
