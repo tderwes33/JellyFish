@@ -5,7 +5,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
-
+using UnityEngine.Analytics;
 
 public class force : MonoBehaviour
 {
@@ -188,7 +188,12 @@ public class force : MonoBehaviour
 
     public void Reset()
     {
-        if(gameover!=null)
+        AnalyticsEvent.Custom("Level", new Dictionary<string, object>
+    {
+        { "level", level },
+        { "word", actual_word }
+    });
+        if (gameover!=null)
             gameover.SetActive(false);
 
         reset_canvas.SetActive(false);
@@ -284,6 +289,7 @@ public class force : MonoBehaviour
 
     void updateLetters()
     {
+
         Text t;
         Debug.Log("Updating letters");
         //if (i < char_arr.Length)
@@ -376,6 +382,17 @@ public class force : MonoBehaviour
 
 void Start()
     {
+        AnalyticsEvent.Custom("Level", new Dictionary<string, object>
+    {
+        { "level", level },
+        { "word", actual_word }
+    });
+
+        Analytics.CustomEvent("Level", new Dictionary<string, object>
+  {
+    { "level", level },
+    { "word", actual_word }
+  });
         if (gameObject.tag == "restart_Button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;

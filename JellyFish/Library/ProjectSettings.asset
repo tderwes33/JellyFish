@@ -663,6 +663,10 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Build: 0
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
     UNet: 1
   luminIcon:
     m_Name: 
@@ -683,9 +687,9 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 6c03d631-d59c-466f-bf90-aa3b602bc8e9
+  cloudProjectId: 3ab4dc61-81f9-451e-99b4-6e0b8c8999be
   framebufferDepthMemorylessMode: 0
-  projectName: Jelly
+  projectName: JellyFish
   organizationId: telkur
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
