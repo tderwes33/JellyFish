@@ -25,6 +25,7 @@ TagManager:
   - Life
   - category
   - level
+  - reset_canvas
   layers:
   - Default
   - TransparentFX

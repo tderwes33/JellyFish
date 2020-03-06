@@ -28,7 +28,7 @@ public class force : MonoBehaviour
 
     public static char[] allCharacters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-    public GameObject h1, h2, h3, gameover, restart_Button;
+    public GameObject h1, h2, h3, gameover, restart_Button, reset_canvas;
     static GameObject bullet;
     // the three hearts
 
@@ -44,6 +44,7 @@ public class force : MonoBehaviour
     //public static string word_formed = word1;
     public int word_length = word_formed.Length;
     public int word_length1 = word_formed1.Length;
+    public static int hint_shown = 1;
 
     public static char[] char_arr = word_formed.ToCharArray();
     public Text wordCreated;
@@ -83,13 +84,16 @@ public class force : MonoBehaviour
         {
             hint = hint + "\n1. " + hint_1;
         }
-        if (h1.GetComponentInChildren<SpriteRenderer>().color == trans)
+        if (hint_shown == 3 || hint_shown == 2 || h1.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
             hint = hint + "\n2. " + hint_2;
+            if(hint_shown == 1)
+                hint_shown = 2;
         }
-        if (h2.GetComponentInChildren<SpriteRenderer>().color == trans)
+        if (hint_shown == 3 || h2.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
             hint = hint + "\n3. " + hint_3;
+            hint_shown = 3;
         }
         Debug.Log(hint);
         return hint;
@@ -161,7 +165,10 @@ public class force : MonoBehaviour
         if (!getPaused())
         {
             Time.timeScale = 1;
-            transform.Translate(Time.deltaTime * 0.1f*level * direction, 0, 0);
+            if (level > 20)
+                transform.Translate(Time.deltaTime * 0.2f * 20 * direction, 0, 0);
+            else
+                transform.Translate(Time.deltaTime * 0.2f * level * direction, 0, 0);
         } else
         {
            
@@ -183,9 +190,10 @@ public class force : MonoBehaviour
     {
         if(gameover!=null)
             gameover.SetActive(false);
-        //hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
 
-        
+        reset_canvas.SetActive(false);
+        //hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
+        hint_shown = 1;
         setReset(false);
         health = 3;
         GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : "+level;
@@ -582,6 +590,7 @@ void Start()
                     //TODO
                     bullet = collision.gameObject;
                     restart_Button.SetActive(true);
+                    reset_canvas.SetActive(true);
                     return;
                 }
             }
@@ -619,6 +628,7 @@ void Start()
                     //h3.SetActive(false);
                     //TODO
                     restart_Button.SetActive(true);
+                    reset_canvas.SetActive(true);
                     return;
                 }
             }
