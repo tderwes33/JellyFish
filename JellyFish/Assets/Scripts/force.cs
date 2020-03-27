@@ -9,11 +9,12 @@ using UnityEngine.Analytics;
 
 public class force : MonoBehaviour
 {
-
-
+    static public float levelTimer=0;
+    public bool updateTimer=true;
+    public static int attempts_for_current_level = 1;
     public int new_hint = 0;
     public int temp_flag = 0;
-
+    public static int no_of_hearts_collected = 0;
     public static int health = 3;
     public static int level = 1;
     public static string actual_word = "";
@@ -158,6 +159,8 @@ public class force : MonoBehaviour
 
     void Update()
     {
+        if (updateTimer)
+            levelTimer += Time.deltaTime;
         //hp = gameObject.AddComponent<hints_panel>();s
         //Debug.Log(hp.getPaused());
         if (gameObject.tag == "restart_Button")
@@ -188,6 +191,7 @@ public class force : MonoBehaviour
 
     public void Reset()
     {
+        updateTimer = true;
         AnalyticsEvent.Custom("Level", new Dictionary<string, object>
     {
         { "level", level },
@@ -425,31 +429,32 @@ void Start()
         }
         GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : " + level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
-        Debug.Log("1");
+       // Debug.Log("1");
         //hp.paused = false;
         h1 = GameObject.FindGameObjectWithTag("heart1");
         h2 = GameObject.FindGameObjectWithTag("heart2");
         h3 = GameObject.FindGameObjectWithTag("heart3");
         // game object reference put using unity ui only
-        Debug.Log("2");
+        //Debug.Log("2");
         if (hp == null)
             hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
 
     if (remaining == null)
     {
-        Debug.Log("21");
-            
+            levelTimer = 0.0f;
+            //Debug.Log("21");
+
 
             List<Dictionary<string, object>> data = CSVReader.Read("data");
             var random_index_1 = Random.Range(0, data.Count);
-            Debug.Log("3");
+            //Debug.Log("3");
 
             actual_word = data[random_index_1]["word"].ToString();
             hint_1 = data[random_index_1]["Hint 1"].ToString();
             hint_2 = data[random_index_1]["Hint 2"].ToString();
             hint_3 = data[random_index_1]["Hint 3"].ToString();
             category = data[random_index_1]["Category"].ToString();
-            Debug.Log("4");
+            //Debug.Log("4");
             Text cat = GameObject.FindGameObjectWithTag("category").GetComponent<Text>();
             cat.text="Category : "+(category);
             word1 = actual_word.ToUpper();
@@ -528,6 +533,8 @@ void Start()
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Debug.Log("hit heart");
+            //Hearts collected by user
+            no_of_hearts_collected += 1;
             if (health == 3)
             {
                 // do nothing
@@ -599,8 +606,28 @@ void Start()
                     gameover.SetActive(true);
                     setReset(true);
                     Debug.Log("Level completed " + level);
+                    Analytics.CustomEvent("Level_Health_Attempts", new Dictionary<string, object>
+                      {
+                        { "level "+level, health},
+                        { "Attempts for "+(level), attempts_for_current_level}
+                      });
+                    Debug.Log("level " + level + health);
+                    Debug.Log("Attempts for " + (level) + attempts_for_current_level);
                     level += 1;
                     
+                    /*
+                     * for analytics use
+                     */
+
+                    //Analytics.CustomEvent("Attempts", new Dictionary<string, object>
+                    //  {
+                    //    { "Attempts for "+(level-1), attempts_for_current_level}
+
+                    //  });
+                    attempts_for_current_level = 1; // reset the attempts count to 1
+                    
+
+                    /* analytics ends */
                     //hp.gameObject.SetActive(false);
                     //collision.gameObject.SetActive(false);
                     gameObject.SetActive(true);
@@ -637,6 +664,7 @@ void Start()
                     Text t11 = gameover.GetComponentInChildren<Text>();
                     Debug.Log(word1);
                     t11.text = "Game Over!\nCorrect Word: "+actual_word.ToUpper();
+                    attempts_for_current_level += 1; //increment number of attempts
                     gameover.SetActive(true);
                     setReset(true);
                     //hp.gameObject.SetActive(false);
@@ -647,6 +675,19 @@ void Start()
                     //TODO
                     restart_Button.SetActive(true);
                     reset_canvas.SetActive(true);
+                    Analytics.CustomEvent("gameOver", new Dictionary<string, object>
+                        {
+                            { "no_of_hearts_collected_by_user:", no_of_hearts_collected }
+                        });
+                    Debug.Log("no_of_hearts_collected_by_user:" + no_of_hearts_collected);
+                    Debug.Log("time played:" + levelTimer);
+                    AnalyticsEvent.Custom("gameOver", new Dictionary<string, object>
+                    {
+                        { "no_of_hearts_collected_by_user:", no_of_hearts_collected }
+
+                    });
+                    Debug.Log("no_of_hearts_collected_by_user:" + no_of_hearts_collected);
+                    updateTimer = false;
                     return;
                 }
             }
