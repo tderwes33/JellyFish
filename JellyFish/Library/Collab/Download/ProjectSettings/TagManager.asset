@@ -26,6 +26,9 @@ TagManager:
   - category
   - level
   - reset_canvas
+  - bar2
+  - bar1
+  - Category_Text
   layers:
   - Default
   - TransparentFX
@@ -35,7 +38,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - High
   - 
   - 
   - 
@@ -62,4 +65,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer
+    uniqueID: 3321484501
+    locked: 0
+  - name: New Layer1
+    uniqueID: 3489772551
     locked: 0

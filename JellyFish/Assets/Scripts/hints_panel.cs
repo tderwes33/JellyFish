@@ -11,11 +11,32 @@ public class hints_panel : MonoBehaviour
     public GameObject Panel;
     public static int score;
     static Text txt;
-
+    static Text txt1;
     public int addscore(int i)
     {
         score += i;
         return score;
+    }
+    public void OpenPanelInit(String hint1)
+    {
+        
+        if (Panel != null)
+        {
+            f = GameObject.FindGameObjectWithTag("Letter1").GetComponent<force>();
+
+            f.setPaused(true);
+
+            Panel.SetActive(true);
+            txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
+            //txt1 = GameObject.FindWithTag("Category_Text").GetComponent<Text>() as Text;
+            //txt = gameObject.GetComponent<Text>();
+            if (f != null && txt != null)
+            {
+                // Debug.Log(f.getHint());
+                txt.text = hint1;
+                //txt1.text = f.getCat().ToUpper();
+            }
+        }
     }
     public void OpenPanel()
     {
@@ -29,12 +50,13 @@ public class hints_panel : MonoBehaviour
 
             Panel.SetActive(true);
             txt = GameObject.FindWithTag("Hint_Text").GetComponent<Text>() as Text;
+            //txt1 = GameObject.FindWithTag("Category_Text").GetComponent<Text>() as Text;
             //txt = gameObject.GetComponent<Text>();
-            if (txt != null)
+            if (f != null && txt != null)
             {
                 Debug.Log(f.getHint());
-
                 txt.text = f.getHint();
+                //txt1.text = f.getCat().ToUpper();
             }
         }
     }
@@ -57,7 +79,7 @@ public class hints_panel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //OpenPanel();
        
     }
     

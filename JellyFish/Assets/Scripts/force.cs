@@ -6,9 +6,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using UnityEngine.Analytics;
-
+using System.Globalization;
+using UnityEngine.SceneManagement;
 public class force : MonoBehaviour
 {
+    private static force instance;
     static public float levelTimer=0;
     public bool updateTimer=true;
     public static int attempts_for_current_level = 1;
@@ -22,6 +24,18 @@ public class force : MonoBehaviour
     public static string hint_2 = "";
     public static string hint_3 = "";
     public static string category = "";
+    public static int bubble_flag = 0;
+    public static char bubble_letter = ' ';
+    public static HashSet<string> guessed_wordset = new HashSet<string>();
+    //public int temp_level=1;
+    /* for saving and storing */
+
+        public static int previousBestLevel=0;
+        public static int previousLevel=0;
+        public static int previousHealth=0;
+
+    /*                         */
+
     Color trans = new Color(1f, 1f, 1f, 0f);
     Color opaque = new Color(1f, 1f, 1f, 1f);
 
@@ -80,20 +94,21 @@ public class force : MonoBehaviour
     }
     public string getHint()
     {
-        string hint = "Hints";
+        string hint = "";
+        //string hint = "Hints";
         //if(h1.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n1. " + hint_1;
+            hint = hint + "1. " + hint_1;
         }
         if (hint_shown == 3 || hint_shown == 2 || h1.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n2. " + hint_2;
+            hint = hint + "\n\n2. " + hint_2;
             if(hint_shown == 1)
                 hint_shown = 2;
         }
         if (hint_shown == 3 || h2.GetComponentInChildren<SpriteRenderer>().color == trans)
         {
-            hint = hint + "\n3. " + hint_3;
+            hint = hint + "\n\n3. " + hint_3;
             hint_shown = 3;
         }
         Debug.Log(hint);
@@ -101,8 +116,9 @@ public class force : MonoBehaviour
     }
 
     public string getCat()
-    {
+    {   category= string.Join(" ", category.Split(' ').Select(i => i.Substring(0, 1).ToUpper() + i.Substring(1).ToLower()).ToArray()); ;
         Debug.Log(category);
+        //return new CultureInfo("en").TextInfo.ToTitleCase(category.ToLower());
         return category;
     }
 
@@ -168,13 +184,34 @@ public class force : MonoBehaviour
         if (!getPaused())
         {
             Time.timeScale = 1;
-            if (level > 20)
-                transform.Translate(Time.deltaTime * 0.2f * 20 * direction, 0, 0);
-            else
+            Debug.Log(gameObject.transform.position);
+            if (level > 20){
+                if(gameObject.tag == "Letter1")
+                    transform.Translate(Time.deltaTime * 0.35f * 20 * direction, 0, 0);
+                if(gameObject.tag == "Letter2")
+                    transform.Translate(Time.deltaTime * 0.25f * 20 * direction, 0, 0);
+                if(gameObject.tag == "Letter3")
+                    transform.Translate(Time.deltaTime * 0.3f * 20 * direction, 0, 0);
+                if(gameObject.tag == "Letter4")
+                    transform.Translate(Time.deltaTime * 0.2f * 20 * direction, 0, 0);
+                if(gameObject.tag == "Letter5")
+                    transform.Translate(Time.deltaTime * 0.4f * 20 * direction, 0, 0);
+            }
+            else{
+                if(gameObject.tag == "Letter1")
+                transform.Translate(Time.deltaTime * 0.35f * level * direction, 0, 0);
+                if(gameObject.tag == "Letter2")
+                transform.Translate(Time.deltaTime * 0.25f * level * direction, 0, 0);
+                if(gameObject.tag == "Letter3")
+                transform.Translate(Time.deltaTime * 0.3f * level * direction, 0, 0);
+                if(gameObject.tag == "Letter4")
                 transform.Translate(Time.deltaTime * 0.2f * level * direction, 0, 0);
+                if(gameObject.tag == "Letter5")
+                transform.Translate(Time.deltaTime * 0.4f * level * direction, 0, 0);
+            }
         } else
         {
-           
+            
             Time.timeScale = 0;
             RayCastShooter bull = GameObject.FindGameObjectWithTag("ball").GetComponent<RayCastShooter>();
             //bull.gameObject.SetActive(false);
@@ -197,9 +234,11 @@ public class force : MonoBehaviour
         { "level", level },
         { "word", actual_word }
     });
+
+    Firebase.Analytics.FirebaseAnalytics.LogEvent("level", "number", level);
+
         if (gameover!=null)
             gameover.SetActive(false);
-
         reset_canvas.SetActive(false);
         //hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
         hint_shown = 1;
@@ -223,16 +262,56 @@ public class force : MonoBehaviour
         //h1.SetActive(true);
         //h2.SetActive(true);
         //h3.SetActive(true);
+        string level_status = "";
+        if (level == 6)
+        {
+            //Display all the Easy levels are over
+           
+        }
+        if (level == 13)
+        {
+            //Display all the Medium levels are over
+        }
+        if (level <= 1 && level <= 5)
+        {
+            level_status = "Easy";
+        }
+        else if(level <= 6 && level <= 12)
+        {
+            
+            level_status = "Medium";
 
-        List<Dictionary<string, object>> data = CSVReader.Read("data");
+        }
+        else
+        {
+            
+            level_status = "Hard";
+            if(level>21)
+            {
+                level = 1;
+                level_status= "Easy";
+            }
+        }
+
+        List<Dictionary<string, object>> data = CSVReader.Read(level_status);
         var random_index_1 = Random.Range(0, data.Count);
         Debug.Log("3");
 
         actual_word = data[random_index_1]["word"].ToString();
+
+        while(guessed_wordset.Contains(actual_word.ToUpper()))
+        {
+            random_index_1 = Random.Range(0, data.Count);
+            actual_word = data[random_index_1]["word"].ToString();
+
+        }
+        guessed_wordset.Add(actual_word.ToUpper());
         hint_1 = data[random_index_1]["Hint 1"].ToString();
         hint_2 = data[random_index_1]["Hint 2"].ToString();
         hint_3 = data[random_index_1]["Hint 3"].ToString();
         category = data[random_index_1]["Category"].ToString();
+        category = string.Join(" ", category.Split(' ').Select(i => i.Substring(0, 1).ToUpper() + i.Substring(1).ToLower()).ToArray()); ;
+
         Debug.Log("4");
         Text cat = GameObject.FindGameObjectWithTag("category").GetComponent<Text>();
         cat.text = "Category : " + (category);
@@ -257,10 +336,16 @@ public class force : MonoBehaviour
                 CorrectandIncorrect.Add(char_arr[j]);
             }
         }
+        //Random index selected to be filled 
+        var random_letter_selected = Random.Range(0, word_length);
+        var random_letter = char_arr[random_letter_selected];
         //Till here
         for (int j = 0; j < word_length; j++)
         {
-            Correct.Add(char_arr[j]);
+            if (char_arr[j] != random_letter)
+            {
+                Correct.Add(char_arr[j]);
+            }
         }
         for (int j = 0; j < remaining.Length; j++)
         {
@@ -278,8 +363,15 @@ public class force : MonoBehaviour
             while (totalLength != word_length1)
             {
                 Debug.Log("Step 1");
-                s += "_ ";
-                totalLength += 1;
+                if (word1[totalLength] != random_letter)
+                {
+                    s += "_ ";
+                }
+                else
+                {
+                    s += random_letter + " ";
+                }
+            totalLength += 1;
             }
             Debug.Log("Step 2");
             wordCreated.text = s;
@@ -287,13 +379,16 @@ public class force : MonoBehaviour
         // else if (i == CorrectandIncorrect.Count)
 
         updateLetters();
-      
+        if (hp == null)
+            hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
 
+        hp.OpenPanel();
     }
 
     void updateLetters()
     {
 
+       
         Text t;
         Debug.Log("Updating letters");
         //if (i < char_arr.Length)
@@ -328,6 +423,7 @@ public class force : MonoBehaviour
             g5.transform.position = pos;
 
             t = GameObject.FindGameObjectWithTag("Letter"+ letter_sort[selection][0]).GetComponentInChildren<Text>();
+           
             if (tmp_correct.Count == 0)
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
@@ -342,7 +438,8 @@ public class force : MonoBehaviour
                 t.text = tmp_correct[random_index].ToString();
                 tmp_correct.Remove(t.text[0]);
             }
-            
+
+           
 
             t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][1]).GetComponentInChildren<Text>();
             if (tmp_correct.Count == 0)
@@ -358,6 +455,7 @@ public class force : MonoBehaviour
                 t.text = tmp_correct[random_index].ToString();
                 tmp_correct.Remove(t.text[0]);
             }
+            
             t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][2]).GetComponentInChildren<Text>();
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
@@ -365,6 +463,7 @@ public class force : MonoBehaviour
                 t.text = tmp_incorrect[random_index].ToString();
                 tmp_incorrect.Remove(t.text[0]);
             }
+            
             t = GameObject.FindGameObjectWithTag("Letter" + letter_sort[selection][3]).GetComponentInChildren<Text>();
             {
                 var random_index = Random.Range(0, tmp_incorrect.Count);
@@ -372,6 +471,7 @@ public class force : MonoBehaviour
                 t.text = tmp_incorrect[random_index].ToString();
                 tmp_incorrect.Remove(t.text[0]);
             }
+          
             /*
             t = GameObject.FindGameObjectWithTag("Letter5").GetComponentInChildren<Text>();
             {
@@ -381,22 +481,28 @@ public class force : MonoBehaviour
                 tmp_incorrect.Remove(t.text[0]);
             }
             */
+
         }
     }
+   
 
-void Start()
+    void Start()
     {
         AnalyticsEvent.Custom("Level", new Dictionary<string, object>
-    {
-        { "level", level },
-        { "word", actual_word }
-    });
+        {
+            { "level", level },
+            { "word", actual_word }
+        });
+
+       
 
         Analytics.CustomEvent("Level", new Dictionary<string, object>
-  {
-    { "level", level },
-    { "word", actual_word }
-  });
+          {
+            { "level", level },
+            { "word", actual_word }
+          });
+       Firebase.Analytics.FirebaseAnalytics.LogEvent("word", "string", actual_word);
+
         if (gameObject.tag == "restart_Button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;
@@ -441,19 +547,51 @@ void Start()
 
     if (remaining == null)
     {
+            level = EasyScript.temp_level;
             levelTimer = 0.0f;
             //Debug.Log("21");
 
 
-            List<Dictionary<string, object>> data = CSVReader.Read("data");
+            //List<Dictionary<string, object>> data = CSVReader.Read("data");
+            string level_status = "";
+            if (level <= 1 && level <= 5)
+            {
+                level_status = "Easy";
+            }
+            else if (level <= 6 && level <= 12)
+            {
+                level_status = "Medium";
+
+            }
+            else
+            {
+                level_status = "Hard";
+                if (level > 21)
+                {
+                    level = 1;
+                    level_status = "Easy";
+                }
+            }
+
+            List<Dictionary<string, object>> data = CSVReader.Read(level_status);
             var random_index_1 = Random.Range(0, data.Count);
             //Debug.Log("3");
 
             actual_word = data[random_index_1]["word"].ToString();
+            while (guessed_wordset.Contains(actual_word.ToUpper()))
+            {
+                random_index_1 = Random.Range(0, data.Count);
+                actual_word = data[random_index_1]["word"].ToString();
+
+            }
+            guessed_wordset.Add(actual_word.ToUpper());
+            Debug.Log(guessed_wordset);
             hint_1 = data[random_index_1]["Hint 1"].ToString();
             hint_2 = data[random_index_1]["Hint 2"].ToString();
             hint_3 = data[random_index_1]["Hint 3"].ToString();
             category = data[random_index_1]["Category"].ToString();
+            category = string.Join(" ", category.Split(' ').Select(i => i.Substring(0, 1).ToUpper() + i.Substring(1).ToLower()).ToArray()); ;
+
             //Debug.Log("4");
             Text cat = GameObject.FindGameObjectWithTag("category").GetComponent<Text>();
             cat.text="Category : "+(category);
@@ -478,10 +616,16 @@ void Start()
                     CorrectandIncorrect.Add(char_arr[j]);
                 }
             }
+            //Random index selected to be filled 
+            var random_letter_selected = Random.Range(0, word_length);
+            var random_letter = char_arr[random_letter_selected];
             //Till here
             for (int j = 0; j < word_length; j++)
-            {
-                Correct.Add(char_arr[j]);
+            {   if (word1[j] != random_letter)
+                {
+                    Correct.Add(char_arr[j]);
+                }
+                
             }
             for (int j = 0; j < remaining.Length; j++)
             {
@@ -496,7 +640,14 @@ void Start()
                 while (totalLength != word_length1)
                 {
                     Debug.Log("Step 1");
-                    s += "_ ";
+                    if (word1[totalLength] != random_letter)
+                    {
+                        s += "_ ";
+                    }
+                    else
+                    {
+                        s += random_letter + " ";
+                    }
                     totalLength += 1;
                 }
                 Debug.Log("Step 2");
@@ -508,7 +659,11 @@ void Start()
                 //else if (i == char_arr.Length)
                 // else if (i == CorrectandIncorrect.Count)
 
-        updateLetters();
+            updateLetters();
+            if(hp==null)
+                 hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
+                    hp.OpenPanelInit("1. " + hint_1);
+
 
             }
 
@@ -518,15 +673,29 @@ void Start()
             Debug.Log(CorrectandIncorrect.Count);
         //if (i < CorrectandIncorrect.Count)
         {
-            
-            hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
+            if(hp==null)
+                hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
 
         }
+        /* load previous save data */
+        if (gameObject.tag == "Letter1") // because I want only one object to do file IO
+        {
+            loadData();
+            //level = previousBestLevel +1;
+            /* loads from previous best */
+            if(level >=21)
+            {
+                previousBestLevel = 1;
+                level = 1;
+            }
+        }
+        /* end */
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(word_formed);
+        
         if (collision.gameObject.tag == "bullet" && gameObject.tag == "Letter5")
         {
             collision.gameObject.SetActive(false);
@@ -537,7 +706,38 @@ void Start()
             no_of_hearts_collected += 1;
             if (health == 3)
             {
-                // do nothing
+               
+
+                Text t1 = GameObject.FindGameObjectWithTag("Letter1").GetComponentInChildren<Text>();
+                Text t2 = GameObject.FindGameObjectWithTag("Letter2").GetComponentInChildren<Text>();
+                Text t3 = GameObject.FindGameObjectWithTag("Letter3").GetComponentInChildren<Text>();
+                Text t4 = GameObject.FindGameObjectWithTag("Letter4").GetComponentInChildren<Text>();
+                // To highight the bubble
+                Color newCol;
+                if (ColorUtility.TryParseHtmlString("#F1FF5D", out newCol))
+                {
+                    if (word1.Contains(t1.text[0]))
+                    {
+                        GameObject.FindGameObjectWithTag("Letter1").GetComponent<SpriteRenderer>().color = newCol;
+
+                    }
+                    else if (word1.Contains(t2.text[0]))
+                    {
+                        GameObject.FindGameObjectWithTag("Letter2").GetComponent<SpriteRenderer>().color = newCol;
+
+                    }
+                    else if (word1.Contains(t3.text[0]))
+                    {
+                        GameObject.FindGameObjectWithTag("Letter3").GetComponent<SpriteRenderer>().color = newCol;
+
+                    }
+                    else if (word1.Contains(t4.text[0]))
+                    {
+                        GameObject.FindGameObjectWithTag("Letter4").GetComponent<SpriteRenderer>().color = newCol;
+
+                    }
+                }
+
                 Debug.Log("health=" + health);
             }
             else if (health <= 2)
@@ -560,9 +760,15 @@ void Start()
         }
         else if(collision.gameObject.tag == "bullet")
         {
-
+            //AA93DD
             //GameObject g = Instantiate(collision.gameObject, new Vector3(0,0), transform.rotation);
             collision.gameObject.SetActive(false);
+            gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
+            GameObject.FindGameObjectWithTag("Letter1").GetComponent<SpriteRenderer>().color = Color.white;
+            GameObject.FindGameObjectWithTag("Letter2").GetComponent<SpriteRenderer>().color = Color.white;
+            GameObject.FindGameObjectWithTag("Letter3").GetComponent<SpriteRenderer>().color = Color.white;
+            GameObject.FindGameObjectWithTag("Letter4").GetComponent<SpriteRenderer>().color = Color.white;
+
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Text t = gameObject.GetComponentInChildren<Text>();
@@ -572,7 +778,7 @@ void Start()
             if (word_formed1.Contains(t.text[0])) //Condition when it is a correct character  
             {
                 var foundIndexes = new List<int>();
-
+                bubble_flag = 0;
 
                 for (int j = word_formed1.IndexOf(t.text[0]); j > -1; j = word_formed1.IndexOf(t.text[0], j + 1))
                 {
@@ -603,6 +809,10 @@ void Start()
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
                     t11.text = "Yay!";
+
+                    /* save game state */
+                    saveData();
+                    /* finished saving */
                     gameover.SetActive(true);
                     setReset(true);
                     Debug.Log("Level completed " + level);
@@ -613,8 +823,16 @@ void Start()
                       });
                     Debug.Log("level " + level + health);
                     Debug.Log("Attempts for " + (level) + attempts_for_current_level);
+                    //if(level > previousBestLevel)
+                    //{
+                    //    previousBestLevel = level;
+                    //}
                     level += 1;
-                    
+                    /* if level is greater than 20 go back to 1 */
+                    if (level >= 21)
+                    {
+                        level = 1;
+                    }
                     /*
                      * for analytics use
                      */
@@ -663,6 +881,10 @@ void Start()
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
                     Debug.Log(word1);
+
+                    /* save data */
+                    saveData();
+
                     t11.text = "Game Over!\nCorrect Word: "+actual_word.ToUpper();
                     attempts_for_current_level += 1; //increment number of attempts
                     gameover.SetActive(true);
@@ -690,6 +912,9 @@ void Start()
                     updateTimer = false;
                     return;
                 }
+       
+
+               
             }
 
 
@@ -720,4 +945,33 @@ void Start()
         gameObject.SetActive(true);
         direction *= -1;
     }
+
+    /* for saving and loading player data */
+    public void saveData()
+    {
+        if (level > previousBestLevel)
+        {
+            previousBestLevel = level;
+        }
+        SaveSystem.SaveForce(this);
+        Debug.Log("Data Saved\n");
+    }
+    public void loadData()
+    {
+        PlayerData data = SaveSystem.LoadForce();
+        if (data == null)
+        {
+            return;
+        }
+        previousLevel = data.level;
+        previousHealth = data.health;
+        previousBestLevel = data.best;
+
+        Debug.Log("Data Loaded\n");
+        Debug.Log("Previous Health: " + previousHealth);
+        Debug.Log("Previous Level: " + previousLevel);
+        Debug.Log("Previous Best: " + previousBestLevel);
+        //saveData();
+    }
+    /* end saving and loading functions */
 }
