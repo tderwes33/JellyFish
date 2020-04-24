@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BubbleScene.unity
     guid: 08f09a6ebe56941e5a673450517e5d88
+  - enabled: 1
+    path: Assets/Scenes/LockedLevelScene.unity
+    guid: 15d94ee22f737c74a8acaa80b9c42355
   m_configObjects: {}

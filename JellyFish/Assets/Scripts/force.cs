@@ -43,7 +43,7 @@ public class force : MonoBehaviour
 
     public static char[] allCharacters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-    public GameObject h1, h2, h3, gameover, restart_Button, reset_canvas;
+    public GameObject h1, h2, h3, gameover, restart_Button, reset_canvas, exit_button;
     static GameObject bullet;
     // the three hearts
 
@@ -72,7 +72,11 @@ public class force : MonoBehaviour
     public static bool reset = false;
 
     public static List<int[]> letter_sort = new List<int[]>();
-   
+    //public AudioClip bubblepop;
+
+    double timerStart = 0;
+    bool extra_showing = false;
+
     public int increment_letter_selection()
     {
         return Random.Range(0, letter_sort.Count);
@@ -169,17 +173,25 @@ public class force : MonoBehaviour
     }
 
 
-
-
-    //static public char[] char_arr1 = "brunda".ToCharArray();
+    public void back_button_press(){
+        hp = null;
+        remaining = null;
+        setReset(false);
+        SceneManager.LoadScene(sceneName: "LevelScene");
+    }
 
     void Update()
     {
         if (updateTimer)
             levelTimer += Time.deltaTime;
+        if(extra_showing && (levelTimer - timerStart > 5)){
+            extra_showing = false;
+            GameObject.FindGameObjectWithTag("extralife").GetComponent<CanvasGroup>().alpha = 0f;
+            GameObject.FindGameObjectWithTag("extrahint").GetComponent<CanvasGroup>().alpha = 0f;
+        }
         //hp = gameObject.AddComponent<hints_panel>();s
         //Debug.Log(hp.getPaused());
-        if (gameObject.tag == "restart_Button")
+        if (gameObject.tag == "restart_Button" || gameObject.tag == "exit_button")
             return;
         if (!getPaused())
         {
@@ -222,13 +234,31 @@ public class force : MonoBehaviour
             bull.bulletProgress = 0.0f;
 
         }
+        //Trail
+        if (Application.platform == RuntimePlatform.Android)
+        {
 
+            // Check if Back was pressed this frame
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+
+                // Quit the application
+                        hp = null;
+                        remaining = null;
+                        setReset(false);
+                        
+        SceneManager.LoadScene(sceneName: "LevelScene");
+            }
+        }
+        //Till here
 
     }
 
     public void Reset()
     {
         updateTimer = true;
+        GameObject.FindGameObjectWithTag("confetti").GetComponent<ParticleSystem>().Stop();
+        Debug.Log("Stopping confetti");
         AnalyticsEvent.Custom("Level", new Dictionary<string, object>
     {
         { "level", level },
@@ -263,20 +293,13 @@ public class force : MonoBehaviour
         //h2.SetActive(true);
         //h3.SetActive(true);
         string level_status = "";
-        if (level == 6)
-        {
-            //Display all the Easy levels are over
-           
-        }
-        if (level == 13)
-        {
-            //Display all the Medium levels are over
-        }
-        if (level <= 1 && level <= 5)
+        
+       
+        if (level >= 1 && level <= 5)
         {
             level_status = "Easy";
         }
-        else if(level <= 6 && level <= 12)
+        else if(level >= 6 && level <= 12)
         {
             
             level_status = "Medium";
@@ -314,6 +337,7 @@ public class force : MonoBehaviour
 
         Debug.Log("4");
         Text cat = GameObject.FindGameObjectWithTag("category").GetComponent<Text>();
+        
         cat.text = "Category : " + (category);
         word1 = actual_word.ToUpper();
         word_formed = new string(word1.Distinct().ToArray());
@@ -488,6 +512,9 @@ public class force : MonoBehaviour
 
     void Start()
     {
+        // GetComponent<AudioSource>().playOnAwake = false;
+        // GetComponent<AudioSource>().clip = bubblepop;
+        
         AnalyticsEvent.Custom("Level", new Dictionary<string, object>
         {
             { "level", level },
@@ -503,7 +530,7 @@ public class force : MonoBehaviour
           });
        Firebase.Analytics.FirebaseAnalytics.LogEvent("word", "string", actual_word);
 
-        if (gameObject.tag == "restart_Button")
+        if (gameObject.tag == "restart_Button" || gameObject.tag == "exit_button")
             return;
         Random.seed = System.DateTime.Now.Millisecond;
         if(letter_sort.Count == 0)
@@ -535,7 +562,7 @@ public class force : MonoBehaviour
         }
         GameObject.FindGameObjectWithTag("level").GetComponent<Text>().text = "Level : " + level;
         GameObject.FindGameObjectWithTag("hint_button").GetComponent<Image>().color = Color.white;
-       // Debug.Log("1");
+        Debug.Log("1");
         //hp.paused = false;
         h1 = GameObject.FindGameObjectWithTag("heart1");
         h2 = GameObject.FindGameObjectWithTag("heart2");
@@ -544,21 +571,23 @@ public class force : MonoBehaviour
         //Debug.Log("2");
         if (hp == null)
             hp = GameObject.FindGameObjectWithTag("hint_button").GetComponent<hints_panel>();
-
-    if (remaining == null)
+         //gameObject.SetActive(true);
+        
+         
+        if (remaining == null)
     {
             level = EasyScript.temp_level;
             levelTimer = 0.0f;
-            //Debug.Log("21");
+            Debug.Log("21");
 
 
             //List<Dictionary<string, object>> data = CSVReader.Read("data");
             string level_status = "";
-            if (level <= 1 && level <= 5)
+            if (level >= 1 && level <= 5)
             {
                 level_status = "Easy";
             }
-            else if (level <= 6 && level <= 12)
+            else if (level >= 6 && level <= 12)
             {
                 level_status = "Medium";
 
@@ -665,7 +694,8 @@ public class force : MonoBehaviour
                     hp.OpenPanelInit("1. " + hint_1);
 
 
-            }
+    }
+        
 
     //Text t = gameObject.GetComponentInChildren<Text>();
     //Debug.Log(t.text);
@@ -692,22 +722,31 @@ public class force : MonoBehaviour
         /* end */
     }
 
+   
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(word_formed);
-        
+        //if (collision.gameObject.tag == "Letter" ){
+        //  GetComponent<AudioSource>().Play();
+       // }
+
+
         if (collision.gameObject.tag == "bullet" && gameObject.tag == "Letter5")
         {
+            GameObject.FindGameObjectWithTag("conf").GetComponent<ParticleSystem>().Play();
             collision.gameObject.SetActive(false);
             gameObject.SetActive(false);
             Invoke("ResetBall", 0.2f);
             Debug.Log("hit heart");
             //Hearts collected by user
             no_of_hearts_collected += 1;
+            
+            //yield return StartCoroutine(FadeEffect.FadeCanvas(GameObject.FindGameObjectWithTag("extralife").GetComponent<CanvasGroup>(), 0f, 1f, 1f));
+            //StartCoroutine(FadeEffect.FadeCanvas(GameObject.FindGameObjectWithTag("extralife").GetComponent<CanvasGroup>(), 1f, 0f, 1f));
             if (health == 3)
             {
-               
-
+                GameObject.FindGameObjectWithTag("extrahint").GetComponent<CanvasGroup>().alpha = 1f;
+                
                 Text t1 = GameObject.FindGameObjectWithTag("Letter1").GetComponentInChildren<Text>();
                 Text t2 = GameObject.FindGameObjectWithTag("Letter2").GetComponentInChildren<Text>();
                 Text t3 = GameObject.FindGameObjectWithTag("Letter3").GetComponentInChildren<Text>();
@@ -742,6 +781,7 @@ public class force : MonoBehaviour
             }
             else if (health <= 2)
             {
+                GameObject.FindGameObjectWithTag("extralife").GetComponent<CanvasGroup>().alpha = 1f;
                 // increase health
                 health++;
                 if (health == 3)
@@ -757,6 +797,8 @@ public class force : MonoBehaviour
                     h2.GetComponentInChildren<SpriteRenderer>().color = opaque;
                 }
             }
+            timerStart = levelTimer;
+            extra_showing = true;
         }
         else if(collision.gameObject.tag == "bullet")
         {
@@ -808,13 +850,15 @@ public class force : MonoBehaviour
                 if (wordCreated.text.Replace(" ", "").Equals(word_formed1))
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
-                    t11.text = "Yay!";
+                    t11.text = "Congrats!";
+                    //\n Completed Level "+ level+" ! \n Word: "+ word_formed1+"\n";
 
                     /* save game state */
                     saveData();
                     /* finished saving */
                     gameover.SetActive(true);
                     setReset(true);
+                    GameObject.FindGameObjectWithTag("confetti").GetComponent<ParticleSystem>().Play();
                     Debug.Log("Level completed " + level);
                     Analytics.CustomEvent("Level_Health_Attempts", new Dictionary<string, object>
                       {
@@ -828,6 +872,27 @@ public class force : MonoBehaviour
                     //    previousBestLevel = level;
                     //}
                     level += 1;
+                    if (level == 6 )
+                    {
+                        //Display all the Easy levels are over
+                        hp = null;
+                        remaining = null;
+                        setReset(false);
+                        //Display a canvas with showing all easy levels completed
+                        SceneManager.LoadScene(sceneName: "LevelScene");
+
+                    }
+                    if (level == 13)
+                    {
+                        //Display all the Easy levels are over
+                        hp = null;
+                        remaining = null;
+                        setReset(false);
+                        //Display a canvas with showing all medium levels completed
+
+                        SceneManager.LoadScene(sceneName: "LevelScene");
+
+                    }
                     /* if level is greater than 20 go back to 1 */
                     if (level >= 21)
                     {
@@ -853,8 +918,10 @@ public class force : MonoBehaviour
                     bullet = collision.gameObject;
                     restart_Button.SetActive(true);
                     reset_canvas.SetActive(true);
+                    exit_button.SetActive(true);
                     return;
-                }
+                } else 
+                    GameObject.FindGameObjectWithTag("conf").GetComponent<ParticleSystem>().Play();
             }
 
 
@@ -896,6 +963,7 @@ public class force : MonoBehaviour
                     //h3.SetActive(false);
                     //TODO
                     restart_Button.SetActive(true);
+                    exit_button.SetActive(true);
                     reset_canvas.SetActive(true);
                     Analytics.CustomEvent("gameOver", new Dictionary<string, object>
                         {

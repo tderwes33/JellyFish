@@ -3,8 +3,8 @@ using System.Collections;
 
 
 public class Ball : MonoBehaviour {
-
-	public enum BALL_TYPE {
+    //public AudioSource source;
+    public enum BALL_TYPE {
 		NONE = -1,
 		TYPE_1,
 		TYPE_2,
@@ -13,6 +13,22 @@ public class Ball : MonoBehaviour {
 		TYPE_5
 	}
 
+    
+/*
+    void Start()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.gameObject.tag == "Letter4") {
+            source.Play();
+            Debug.Log("Hello");
+        }
+            
+    }
+    */
 
 }

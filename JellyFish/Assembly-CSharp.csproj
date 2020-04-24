@@ -60,11 +60,14 @@
      <Compile Include="Assets\Scripts\EasyScript.cs" />
      <Compile Include="Assets\Scripts\force.cs" />
      <Compile Include="Assets\Scripts\hints_panel.cs" />
+     <Compile Include="Assets\Scripts\LockedLevelScript.cs" />
      <Compile Include="Assets\Scripts\MoveBubbles.cs" />
      <Compile Include="Assets\Scripts\PlayerData.cs" />
      <Compile Include="Assets\Scripts\QuitButtonScript.cs" />
      <Compile Include="Assets\Scripts\RayCastShooter.cs" />
      <Compile Include="Assets\Scripts\SaveSystem.cs" />
+     <Compile Include="Assets\Scripts\SoundAdder.cs" />
+     <Compile Include="Assets\Scripts\Start_Music.cs" />
      <Compile Include="Assets\Scripts\StartButtonScript.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

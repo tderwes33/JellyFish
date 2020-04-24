@@ -29,6 +29,15 @@ TagManager:
   - bar2
   - bar1
   - Category_Text
+  - Game Music
+  - pause
+  - Correct_Letter
+  - easyLevelcompleted
+  - confetti
+  - conf
+  - back
+  - extralife
+  - extrahint
   layers:
   - Default
   - TransparentFX
