@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:862967813012:android:3bdf988c23114286603581",
+        "android_client_info": {
+          "package_name": "com.ad95.jellyfish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862967813012-t1fejne09fq62a242010reol2ot7ga07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_Ok-iq2NbMaUexMVC7mv4v1YtrdD4npk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862967813012-t1fejne09fq62a242010reol2ot7ga07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "862967813012-4t1nrfl5v0q96l641m9if9nufh5k6q1i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ad95.jellyfish"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:862967813012:android:5ce21814d53c15ee603581",
         "android_client_info": {
           "package_name": "com.jelly.jellyfish"
@@ -32,10 +68,10 @@
               "client_type": 3
             },
             {
-              "client_id": "862967813012-bnqq43idi29nphp1vebk5p5huv3cugk5.apps.googleusercontent.com",
+              "client_id": "862967813012-4t1nrfl5v0q96l641m9if9nufh5k6q1i.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.jelly.jellyfish"
+                "bundle_id": "com.ad95.jellyfish"
               }
             }
           ]

@@ -7,7 +7,7 @@ public static class SaveSystem
     public static void SaveForce(force forceObject)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.data";
+        string path = Application.persistentDataPath + "/player1.data";
 
         FileStream stream = new FileStream(path, FileMode.Create);
 
@@ -19,7 +19,7 @@ public static class SaveSystem
 
     public static PlayerData LoadForce()
     {
-        string path = Application.persistentDataPath + "/player.data";
+        string path = Application.persistentDataPath + "/player1.data";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

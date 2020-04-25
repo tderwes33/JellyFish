@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>862967813012-bnqq43idi29nphp1vebk5p5huv3cugk5.apps.googleusercontent.com</string>
+	<string>862967813012-4t1nrfl5v0q96l641m9if9nufh5k6q1i.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.862967813012-bnqq43idi29nphp1vebk5p5huv3cugk5</string>
+	<string>com.googleusercontent.apps.862967813012-4t1nrfl5v0q96l641m9if9nufh5k6q1i</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB6pdbw6j2sgWOq4W5lqggeew1IIPRQ-s4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.jelly.jellyfish</string>
+	<string>com.ad95.jellyfish</string>
 	<key>PROJECT_ID</key>
 	<string>jellyfish-2e8db</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:862967813012:ios:e6652dffa42ad4d0603581</string>
+	<string>1:862967813012:ios:57af87b36cd8c9e9603581</string>
 	<key>DATABASE_URL</key>
 	<string>https://jellyfish-2e8db.firebaseio.com</string>
 </dict>

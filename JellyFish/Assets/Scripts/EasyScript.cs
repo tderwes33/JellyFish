@@ -21,15 +21,37 @@ public class EasyScript : MonoBehaviour
     }
     public void EasyClick()
     {
+        
+        force f = new force();
+        f.loadData();
+       
+        // if (force.previousEasyBestLevel>=1  && force.previousEasyBestLevel <= 5)
+        //{
+            temp_level = force.previousEasyBestLevel;
+        //}
+        //else { 
+        //    temp_level = 1; //1 indicates easy
+        //}
         SceneManager.LoadScene(sceneName: "BubbleScene");
-        temp_level = 1; //1 indicates easy
     }
     public void MediumClick()
     {
-        if (force.previousBestLevel >= 5)
+        force f = new force();
+        f.loadData();
+        
+       if (force.previousBestLevel > 5)
         {
+            
+            
+        //        if (force.previousBestLevel >= 6 && force.previousBestLevel <= 12)
+          //      {
+                    temp_level = force.previousMediumBestLevel;
+           //     }
+             //   else
+             //   {
+              //      temp_level = 6; //6 onwards indicates medium
+               // }
             SceneManager.LoadScene(sceneName: "BubbleScene");
-            temp_level = 6; //6 onwards indicates medium
         }
         else
         {
@@ -40,10 +62,20 @@ public class EasyScript : MonoBehaviour
     }
     public void HardClick()
     {
-        if (force.previousBestLevel >= 12)
-        {
+        force f = new force();
+        f.loadData();
+            if (force.previousBestLevel > 12)
+            {
+               
+               // if (force.previousBestLevel >= 13 && force.previousBestLevel <= 21)
+                //{
+                    temp_level = force.previousHardBestLevel;
+                //}
+                //else
+                //{
+                 //   temp_level = 13; //13 onwards indicates Hard
+                //}
             SceneManager.LoadScene(sceneName: "BubbleScene");
-            temp_level = 13; //13 onwards indicates Hard
         }
         else
         {
@@ -54,11 +86,15 @@ public class EasyScript : MonoBehaviour
     }
     public void EasyBackClick()
     {
+        force f = new force();
+        f.saveData();
         SceneManager.LoadScene(sceneName: "LevelScene");
      
     }
     public void BackClick()
     {
+        force f = new force();
+        f.saveData();
         SceneManager.LoadScene(sceneName: "StartScene");
      
     }

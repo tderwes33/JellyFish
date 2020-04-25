@@ -8,6 +8,11 @@ using System.Text.RegularExpressions;
 using UnityEngine.Analytics;
 using System.Globalization;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System;
+using System.Text;
+using Random = UnityEngine.Random;
+
 public class force : MonoBehaviour
 {
     private static force instance;
@@ -31,6 +36,9 @@ public class force : MonoBehaviour
     /* for saving and storing */
 
         public static int previousBestLevel=0;
+        public static int previousEasyBestLevel = 1;
+        public static int previousMediumBestLevel = 6;
+        public static int previousHardBestLevel = 13;
         public static int previousLevel=0;
         public static int previousHealth=0;
 
@@ -54,7 +62,7 @@ public class force : MonoBehaviour
     public static string word1=actual_word.ToUpper();
     public static string word_formed = new string(word1.Distinct().ToArray());
     public static string word_formed1 = word1;
-
+    int bestlevel = 0;
     hints_panel hp;
     //public static string word_formed = word1;
     public int word_length = word_formed.Length;
@@ -177,6 +185,7 @@ public class force : MonoBehaviour
         hp = null;
         remaining = null;
         setReset(false);
+        //saveData();
         SceneManager.LoadScene(sceneName: "LevelScene");
     }
 
@@ -196,7 +205,7 @@ public class force : MonoBehaviour
         if (!getPaused())
         {
             Time.timeScale = 1;
-            Debug.Log(gameObject.transform.position);
+            //Debug.Log(gameObject.transform.position);
             if (level > 20){
                 if(gameObject.tag == "Letter1")
                     transform.Translate(Time.deltaTime * 0.35f * 20 * direction, 0, 0);
@@ -579,8 +588,10 @@ public class force : MonoBehaviour
             level = EasyScript.temp_level;
             levelTimer = 0.0f;
             Debug.Log("21");
-
-
+            Incorrect = new List<char>();
+            Correct = new List<char>();
+            CorrectandIncorrect = new List<char>();
+            guessed_wordset = new HashSet<string>();
             //List<Dictionary<string, object>> data = CSVReader.Read("data");
             string level_status = "";
             if (level >= 1 && level <= 5)
@@ -713,10 +724,10 @@ public class force : MonoBehaviour
             loadData();
             //level = previousBestLevel +1;
             /* loads from previous best */
-            if(level >=21)
+            //if(level >=21)
             {
-                previousBestLevel = 1;
-                level = 1;
+            //    previousBestLevel = 1;
+            //    level = 1;
             }
         }
         /* end */
@@ -851,8 +862,11 @@ public class force : MonoBehaviour
                 {
                     Text t11 = gameover.GetComponentInChildren<Text>();
                     t11.text = "Congrats!";
+                    Text t12 = restart_Button.GetComponentInChildren<Text>();
+                    t12.text = "Next";
                     //\n Completed Level "+ level+" ! \n Word: "+ word_formed1+"\n";
 
+                    level += 1;
                     /* save game state */
                     saveData();
                     /* finished saving */
@@ -871,33 +885,35 @@ public class force : MonoBehaviour
                     //{
                     //    previousBestLevel = level;
                     //}
-                    level += 1;
                     if (level == 6 )
                     {
-                        //Display all the Easy levels are over
-                        hp = null;
-                        remaining = null;
-                        setReset(false);
-                        //Display a canvas with showing all easy levels completed
-                        SceneManager.LoadScene(sceneName: "LevelScene");
+                        
+                        // //Display all the Easy levels are over
+                        // hp = null;
+                        // remaining = null;
+                         //setReset(false);
+                        // //Display a canvas with showing all easy levels completed
+                        // SceneManager.LoadScene(sceneName: "LevelScene");
 
                     }
-                    if (level == 13)
+                    else if (level == 13)
                     {
                         //Display all the Easy levels are over
-                        hp = null;
-                        remaining = null;
-                        setReset(false);
-                        //Display a canvas with showing all medium levels completed
+                        // hp = null;
+                        // remaining = null;
+                        // setReset(false);
+                        // //Display a canvas with showing all medium levels completed
 
-                        SceneManager.LoadScene(sceneName: "LevelScene");
+                        // SceneManager.LoadScene(sceneName: "LevelScene");
 
                     }
                     /* if level is greater than 20 go back to 1 */
-                    if (level >= 21)
+                    else if (level >= 21)
                     {
-                        level = 1;
+                        // level = 1;
                     }
+                    else
+                        restart_Button.SetActive(true);
                     /*
                      * for analytics use
                      */
@@ -916,7 +932,7 @@ public class force : MonoBehaviour
                     gameObject.SetActive(true);
                     //TODO
                     bullet = collision.gameObject;
-                    restart_Button.SetActive(true);
+                    
                     reset_canvas.SetActive(true);
                     exit_button.SetActive(true);
                     return;
@@ -953,6 +969,8 @@ public class force : MonoBehaviour
                     saveData();
 
                     t11.text = "Game Over!\nCorrect Word: "+actual_word.ToUpper();
+                    Text t12 = restart_Button.GetComponentInChildren<Text>();
+                    t12.text = "Restart";
                     attempts_for_current_level += 1; //increment number of attempts
                     gameover.SetActive(true);
                     setReset(true);
@@ -1013,13 +1031,31 @@ public class force : MonoBehaviour
         gameObject.SetActive(true);
         direction *= -1;
     }
-
+   
     /* for saving and loading player data */
     public void saveData()
     {
         if (level > previousBestLevel)
         {
             previousBestLevel = level;
+        }
+        if (level>=1 && level<=6)
+        {
+            previousEasyBestLevel = level;
+            if(level == 6)
+                previousEasyBestLevel = 1;
+        }
+        else if (level> 6 && level <= 13)
+        {
+            previousMediumBestLevel = level;
+            if (level == 13)
+                previousMediumBestLevel = 6;
+        }
+        else if (level > 13 && level <= 22)
+        {
+            previousHardBestLevel = level;
+            if (level == 22)
+                previousHardBestLevel = 13;
         }
         SaveSystem.SaveForce(this);
         Debug.Log("Data Saved\n");
@@ -1034,7 +1070,9 @@ public class force : MonoBehaviour
         previousLevel = data.level;
         previousHealth = data.health;
         previousBestLevel = data.best;
-
+        previousEasyBestLevel = data.easybest;
+        previousMediumBestLevel = data.mediumbest;
+        previousHardBestLevel = data.hardbest;
         Debug.Log("Data Loaded\n");
         Debug.Log("Previous Health: " + previousHealth);
         Debug.Log("Previous Level: " + previousLevel);
