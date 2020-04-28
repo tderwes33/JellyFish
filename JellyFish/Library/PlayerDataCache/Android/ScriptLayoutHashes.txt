@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-C:/Users/adars/Documents/GitHub/JellyFish/JellyFish/bbbb.apk
+C:/Users/adars/Documents/GitHub/JellyFish/JellyFish/seapop.aab
 SceneListBegin?
 Assets/Scenes/StartScene.unity
 Assets/Scenes/LevelScene.unity
